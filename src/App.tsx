@@ -1,9 +1,8 @@
-import "./App.css";
 import { Search } from "./components/Search";
 
 function App(): JSX.Element {
   return (
-    <div className="App">
+    <div className="container mx-auto">
       <Search />
     </div>
   );
