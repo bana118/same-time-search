@@ -1,6 +1,5 @@
 {
   "name": "same-time-search",
-  "version": "0.0.1",
   "license": "MIT",
   "scripts": {
     "start": "react-scripts start",
