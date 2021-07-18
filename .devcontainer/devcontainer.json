@@ -1,5 +1,5 @@
 {
-  "name": "project-name",
+  "name": "same-time-search",
   "dockerFile": "Dockerfile",
   "extensions": [
     "ms-azuretools.vscode-docker",
