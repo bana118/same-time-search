@@ -4,6 +4,8 @@
   "extensions": [
     "ms-azuretools.vscode-docker",
     "dbaeumer.vscode-eslint",
-    "esbenp.prettier-vscode"
+    "esbenp.prettier-vscode",
+    "stylelint.vscode-stylelint",
+    "bradlc.vscode-tailwindcss"
   ]
 }

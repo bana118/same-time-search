@@ -4,5 +4,9 @@
     "editor.codeActionsOnSave": {
         "source.fixAll.eslint": true
     },
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "css.validate": false,
+    "stylelint.enable": true,
+    "tailwindCSS.includeLanguages": {
+        "typescriptreact": "html"
+    }
 }
