@@ -7,7 +7,8 @@
     "test": "yarn lint && yarn type-check && yarn build",
     "eject": "react-scripts eject",
     "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
-    "type-check": "tsc"
+    "type-check": "tsc",
+    "watch:build": "watch \"yarn build\" src"
   },
   "browserslist": {
     "production": [
