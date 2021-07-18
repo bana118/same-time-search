@@ -5,6 +5,7 @@ Chrome extension to search on multiple sites at the same time
 # How to get started
 
 ```
+yarn install --frozen-lockfile
 yarn build
 ```
 
