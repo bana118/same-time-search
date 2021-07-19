@@ -5,6 +5,7 @@ export const Search = (): JSX.Element => {
   const [searchText, setSearchText] = useState("");
   const search = (event: React.FormEvent) => {
     event.preventDefault();
+    if (searchText === "") return;
     chrome.tabs.create(
       {
         url: "https://www.google.com/",
