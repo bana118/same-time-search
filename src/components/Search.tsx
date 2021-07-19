@@ -1,11 +1,10 @@
 import { useState } from "react";
-import { Message } from "../utils/message-type";
+import { Message } from "../utils/message";
 
 export const Search = (): JSX.Element => {
   const [searchText, setSearchText] = useState("");
   const search = (event: React.FormEvent) => {
     event.preventDefault();
-    console.log("Search:", searchText);
     chrome.tabs.create(
       {
         url: "https://www.google.com/",
