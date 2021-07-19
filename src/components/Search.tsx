@@ -1,10 +1,22 @@
+import { useState } from "react";
+
 export const Search = (): JSX.Element => {
+  const [searchText, setSearchText] = useState("");
+  const search = async () => {
+    console.log("Search:", searchText);
+    const tab = await chrome.tabs.create({
+      url: "https://www.google.com/",
+      active: false,
+    });
+  };
   return (
-    <form className="m-2">
+    <form className="m-2" onSubmit={search}>
       <div className="flex">
         <input
           placeholder="Search..."
           className="flex-1 w-full px-4 py-2 text-base text-gray-700 placeholder-gray-400 bg-white border border-transparent rounded-lg shadow-md appearance-none focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+          value={searchText}
+          onChange={(e) => setSearchText(e.target.value)}
         />
       </div>
       <div className="flex mt-2">
