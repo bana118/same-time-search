@@ -4,7 +4,7 @@ export const Search = (): JSX.Element => {
   const [searchText, setSearchText] = useState("");
   const search = async () => {
     console.log("Search:", searchText);
-    const tab = await chrome.tabs.create({
+    await chrome.tabs.create({
       url: "https://www.google.com/",
       active: false,
     });
