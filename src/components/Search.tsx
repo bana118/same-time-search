@@ -13,12 +13,17 @@ export const Search = (): JSX.Element => {
       },
       (tab) => {
         if (tab.id != null) {
-          chrome.tabs.onUpdated.addListener((tabId, changeInfo) => {
+          const sendMessageToContentScript = (
+            tabId: number,
+            changeInfo: chrome.tabs.TabChangeInfo
+          ) => {
             if (tabId === tab.id && changeInfo.status == "complete") {
               const msg: Message = { searchText };
               chrome.tabs.sendMessage(tabId, msg);
+              chrome.tabs.onUpdated.removeListener(sendMessageToContentScript);
             }
-          });
+          };
+          chrome.tabs.onUpdated.addListener(sendMessageToContentScript);
         }
       }
     );
