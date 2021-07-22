@@ -8,7 +8,7 @@ export const saveOptions = (options: Options, onSave?: () => void): void => {
 };
 
 export const loadOptions = (onLoad?: (options: Options) => void): void => {
-  chrome.storage.sync.get(["url", "inputElement"], (items) => {
+  chrome.storage.sync.get(["url", "stringInputElement"], (items) => {
     if (onLoad != null) {
       const options = items as Options;
       onLoad(options);
