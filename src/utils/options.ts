@@ -1,6 +1,6 @@
 export type Options = {
   url: string;
-  inputElement: string;
+  stringInputElement: string;
 };
 
 export const saveOptions = (options: Options, onSave?: () => void): void => {

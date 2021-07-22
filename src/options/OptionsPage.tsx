@@ -4,16 +4,16 @@ import { loadOptions, saveOptions } from "../utils/options";
 
 export const OptionsPage = (): JSX.Element => {
   const [url, setUrl] = useState("");
-  const [inputElement, setInputElement] = useState("");
+  const [stringInputElement, setStringInputElement] = useState("");
   useEffect(() => {
     loadOptions((options) => {
       setUrl(options.url);
-      setInputElement(options.inputElement);
+      setStringInputElement(options.stringInputElement);
     });
   }, []);
   const onSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    saveOptions({ url, inputElement });
+    saveOptions({ url, stringInputElement });
   };
   return (
     <div className="container mx-auto">
@@ -26,8 +26,8 @@ export const OptionsPage = (): JSX.Element => {
         />
         <textarea
           className="flex-1 w-full px-4 py-2 text-base text-gray-700 placeholder-gray-400 bg-white border border-transparent rounded-lg shadow-md appearance-none focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-          value={inputElement}
-          onChange={(e) => setInputElement(e.target.value)}
+          value={stringInputElement}
+          onChange={(e) => setStringInputElement(e.target.value)}
         />
         <button type="submit">Save</button>
       </form>
