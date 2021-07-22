@@ -5,16 +5,22 @@ import { loadOptions, saveOptions } from "../utils/options";
 export const OptionsPage = (): JSX.Element => {
   const [url, setUrl] = useState("");
   const [stringInputElement, setStringInputElement] = useState("");
+
   useEffect(() => {
     loadOptions((options) => {
       setUrl(options.url);
       setStringInputElement(options.stringInputElement);
     });
   }, []);
+
+  // TODO url, element のバリデーション
   const onSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     saveOptions({ url, stringInputElement });
   };
+
+  // TODO デザイン
+  // TODO 複数のURLのオプションを設定
   return (
     <div className="container mx-auto">
       <p>設定</p>
