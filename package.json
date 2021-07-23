@@ -8,7 +8,7 @@
     "eject": "react-scripts eject",
     "lint": "yarn lint:js && yarn lint:css",
     "lint:js": "eslint src --ext .js,.jsx,.ts,.tsx",
-    "lint:css": "stylelint src/*.{css,scss,sass}",
+    "lint:css": "stylelint src/**/*.{css,scss,sass}",
     "type-check": "tsc",
     "watch:build": "watch \"yarn build\" src"
   },
