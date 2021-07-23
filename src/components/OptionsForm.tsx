@@ -10,20 +10,24 @@ type OptionsFormProps = {
 };
 
 const schema = z.object({
-  url: z.string().min(1, "URL is Required").url("Not URL"),
-  input: z.string().refine((value) => {
-    if (value === "") return true;
-    const element = stringToElement(value);
-    if (element == null) return false;
-    return isInputElement(element);
-  }, "Not Input Element"),
+  pages: z.array(
+    z.object({
+      url: z.string().min(1, "URL is Required").url("Not URL"),
+      stringInputElement: z.string().refine((value) => {
+        if (value === "") return true;
+        const element = stringToElement(value);
+        if (element == null) return false;
+        return isInputElement(element);
+      }, "Not Input Element"),
+    })
+  ),
 });
 
 type Schema = z.infer<typeof schema>;
 
-const labels: { [P in keyof Schema]-?: string } = {
+const labels: { [P in keyof Schema["pages"][0]]-?: string } = {
   url: "URL(Required)",
-  input: "Input Element (Optional)",
+  stringInputElement: "Input Element (Optional)",
 };
 
 export const OptionsForm = ({ className }: OptionsFormProps): JSX.Element => {
@@ -41,13 +45,13 @@ export const OptionsForm = ({ className }: OptionsFormProps): JSX.Element => {
 
   useEffect(() => {
     loadOptions((options) => {
-      setUrl(options.url);
-      setStringInputElement(options.stringInputElement);
+      setUrl(options.pages[0].url);
+      setStringInputElement(options.pages[0].stringInputElement);
     });
   }, []);
 
   const save = (data: Schema) => {
-    saveOptions({ url: data.url, stringInputElement: data.input }, () => {
+    saveOptions({ pages: data.pages }, () => {
       setShowTooltip(true);
     });
   };
@@ -67,10 +71,12 @@ export const OptionsForm = ({ className }: OptionsFormProps): JSX.Element => {
             id="url"
             placeholder="https://google.com"
             defaultValue={url}
-            {...register("url")}
+            {...register("pages.0.url")}
           />
-          {errors.url?.message && (
-            <p className="text-xs italic text-red-500">{errors.url.message}</p>
+          {errors.pages?.[0]?.url?.message && (
+            <p className="text-xs italic text-red-500">
+              {errors.pages?.[0].url.message}
+            </p>
           )}
         </div>
         <div className="mb-6">
@@ -78,7 +84,7 @@ export const OptionsForm = ({ className }: OptionsFormProps): JSX.Element => {
             className="block mb-2 text-sm font-bold text-gray-700"
             htmlFor="input"
           >
-            {labels.input}
+            {labels.stringInputElement}
           </label>
           <textarea
             className="w-full px-3 py-2 mb-3 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
@@ -86,11 +92,11 @@ export const OptionsForm = ({ className }: OptionsFormProps): JSX.Element => {
             placeholder='<input type="text" class="form-control" id="search" />'
             rows={3}
             defaultValue={stringInputElement}
-            {...register("input")}
+            {...register("pages.0.stringInputElement")}
           />
-          {errors.input?.message && (
+          {errors.pages?.[0]?.stringInputElement?.message && (
             <p className="text-xs italic text-red-500">
-              {errors.input.message}
+              {errors.pages?.[0].stringInputElement.message}
             </p>
           )}
         </div>

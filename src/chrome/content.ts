@@ -4,7 +4,9 @@ import { loadOptions } from "../utils/options";
 
 chrome.runtime.onMessage.addListener((message: Message) => {
   loadOptions((options) => {
-    const inputAndForm = searchInputAndForm(options.stringInputElement);
+    const inputAndForm = searchInputAndForm(
+      options.pages[0].stringInputElement
+    );
     // TODO エラーを表示する
     if (inputAndForm == null) return;
 

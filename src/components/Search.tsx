@@ -10,7 +10,7 @@ export const Search = (): JSX.Element => {
     loadOptions((options) => {
       chrome.tabs.create(
         {
-          url: options.url,
+          url: options.pages[0].url,
           active: false,
         },
         (tab) => {
