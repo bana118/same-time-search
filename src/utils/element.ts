@@ -1,4 +1,6 @@
-const isInputElement = (element: Element): element is HTMLInputElement => {
+export const isInputElement = (
+  element: Element
+): element is HTMLInputElement => {
   return element.tagName.toLowerCase() === "input";
 };
 
@@ -23,12 +25,16 @@ const searchFormByInput = (
   return { inputElement, formElement };
 };
 
+export const stringToElement = (stringElement: string): Element | null => {
+  const tempElement = document.createElement("div");
+  tempElement.innerHTML = stringElement;
+  return tempElement.firstElementChild;
+};
+
 export const searchInputAndForm = (
   stringInputElement: string
 ): InputAndForm | null => {
-  const tempElement = document.createElement("div");
-  tempElement.innerHTML = stringInputElement;
-  const htmlInputElement = tempElement.firstElementChild;
+  const htmlInputElement = stringToElement(stringInputElement);
   if (htmlInputElement != null && !isInputElement(htmlInputElement)) {
     // idから検索
     const id = htmlInputElement.id;
