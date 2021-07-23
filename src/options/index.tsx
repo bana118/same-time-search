@@ -1,11 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./styles/base.css";
-import { Popup } from "./Popup";
+import "../styles/base.css";
+import { OptionsPage } from "./OptionsPage";
 
 ReactDOM.render(
   <React.StrictMode>
-    <Popup />
+    <OptionsPage />
   </React.StrictMode>,
   document.getElementById("root")
 );

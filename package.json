@@ -8,7 +8,7 @@
     "eject": "react-scripts eject",
     "lint": "yarn lint:js && yarn lint:css",
     "lint:js": "eslint src --ext .js,.jsx,.ts,.tsx",
-    "lint:css": "stylelint src/*.{css,scss,sass}",
+    "lint:css": "stylelint src/**/*.{css,scss,sass}",
     "type-check": "tsc",
     "watch:build": "watch \"yarn build\" src"
   },
@@ -26,9 +26,13 @@
   },
   "dependencies": {
     "@craco/craco": "^6.2.0",
+    "@hookform/resolvers": "^2.6.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-scripts": "4.0.3"
+    "react-hook-form": "^7.11.1",
+    "react-icons": "^4.2.0",
+    "react-scripts": "4.0.3",
+    "zod": "^3.5.1"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.11.4",

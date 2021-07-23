@@ -1,22 +1,27 @@
+import { searchInputAndForm, searchSubmitButton } from "../utils/element";
 import { Message } from "../utils/message";
+import { loadOptions } from "../utils/options";
 
 chrome.runtime.onMessage.addListener((message: Message) => {
-  const inputEl = document.getElementsByClassName(
-    "gLFyf gsfi"
-  )[0] as HTMLInputElement;
-  inputEl.value = message.searchText;
-  let formEl: HTMLFormElement | null = null;
-  let element: HTMLElement = inputEl;
-  while (element.parentElement != null) {
-    if (element.parentElement.tagName.toLowerCase() === "form") {
-      formEl = element.parentElement as HTMLFormElement;
-      break;
+  loadOptions((options) => {
+    const inputAndForm = searchInputAndForm(options.stringInputElement);
+    // TODO エラーを表示する
+    if (inputAndForm == null) return;
+
+    inputAndForm.inputElement.value = message.searchText;
+    // zenn.devなどではchangeイベントを発火させる必要がある
+    inputAndForm.inputElement.dispatchEvent(
+      new Event("change", { bubbles: true })
+    );
+
+    const submitButton = searchSubmitButton(inputAndForm.formElement);
+    if (submitButton == null) {
+      inputAndForm.formElement.submit();
+    } else {
+      // submit buttonがあればsubmitイベントが発火するのでsubmit buttonを使う
+      submitButton.click();
     }
-    element = element.parentElement;
-  }
-  if (formEl != null) {
-    formEl.submit();
-  }
+  });
 });
 
 export {};
