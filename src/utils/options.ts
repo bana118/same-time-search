@@ -1,10 +1,25 @@
-type Option = {
-  url: string;
-  stringInputElement: string;
-};
+import { z } from "zod";
+import { isInputElement, stringToElement } from "./element";
 
-export type Options = {
-  pages: Option[];
+export const optionsSchema = z.object({
+  pages: z.array(
+    z.object({
+      url: z.string().min(1, "URL is Required").url("Not URL"),
+      stringInputElement: z.string().refine((value) => {
+        if (value === "") return true;
+        const element = stringToElement(value);
+        if (element == null) return false;
+        return isInputElement(element);
+      }, "Not Input Element"),
+    })
+  ),
+});
+
+export type Options = z.infer<typeof optionsSchema>;
+
+export const optionsLabel: { [P in keyof Options["pages"][0]]-?: string } = {
+  url: "URL(Required)",
+  stringInputElement: "Input Element (Optional)",
 };
 
 export const saveOptions = (options: Options, onSave?: () => void): void => {

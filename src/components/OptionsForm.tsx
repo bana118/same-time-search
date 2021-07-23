@@ -1,33 +1,16 @@
 import { useState, useEffect } from "react";
-import { loadOptions, saveOptions } from "../utils/options";
-import { z } from "zod";
-import { isInputElement, stringToElement } from "../utils/element";
+import {
+  loadOptions,
+  optionsLabel,
+  Options,
+  optionsSchema,
+  saveOptions,
+} from "../utils/options";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 type OptionsFormProps = {
   className?: string;
-};
-
-const schema = z.object({
-  pages: z.array(
-    z.object({
-      url: z.string().min(1, "URL is Required").url("Not URL"),
-      stringInputElement: z.string().refine((value) => {
-        if (value === "") return true;
-        const element = stringToElement(value);
-        if (element == null) return false;
-        return isInputElement(element);
-      }, "Not Input Element"),
-    })
-  ),
-});
-
-type Schema = z.infer<typeof schema>;
-
-const labels: { [P in keyof Schema["pages"][0]]-?: string } = {
-  url: "URL(Required)",
-  stringInputElement: "Input Element (Optional)",
 };
 
 export const OptionsForm = ({ className }: OptionsFormProps): JSX.Element => {
@@ -39,8 +22,8 @@ export const OptionsForm = ({ className }: OptionsFormProps): JSX.Element => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<Schema>({
-    resolver: zodResolver(schema),
+  } = useForm<Options>({
+    resolver: zodResolver(optionsSchema),
   });
 
   useEffect(() => {
@@ -50,7 +33,7 @@ export const OptionsForm = ({ className }: OptionsFormProps): JSX.Element => {
     });
   }, []);
 
-  const save = (data: Schema) => {
+  const save = (data: Options) => {
     saveOptions({ pages: data.pages }, () => {
       setShowTooltip(true);
     });
@@ -64,7 +47,7 @@ export const OptionsForm = ({ className }: OptionsFormProps): JSX.Element => {
             className="block mb-2 text-sm font-bold text-gray-700"
             htmlFor="url"
           >
-            {labels.url}
+            {optionsLabel.url}
           </label>
           <input
             className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
@@ -84,7 +67,7 @@ export const OptionsForm = ({ className }: OptionsFormProps): JSX.Element => {
             className="block mb-2 text-sm font-bold text-gray-700"
             htmlFor="input"
           >
-            {labels.stringInputElement}
+            {optionsLabel.stringInputElement}
           </label>
           <textarea
             className="w-full px-3 py-2 mb-3 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
