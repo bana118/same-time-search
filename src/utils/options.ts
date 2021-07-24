@@ -2,17 +2,19 @@ import { z } from "zod";
 import { isInputElement, stringToElement } from "./element";
 
 export const optionsSchema = z.object({
-  pages: z.array(
-    z.object({
-      url: z.string().min(1, "URL is Required").url("Not URL"),
-      stringInputElement: z.string().refine((value) => {
-        if (value === "") return true;
-        const element = stringToElement(value);
-        if (element == null) return false;
-        return isInputElement(element);
-      }, "Not Input Element"),
-    })
-  ),
+  pages: z
+    .array(
+      z.object({
+        url: z.string().min(1, "URL is Required").url("Not URL"),
+        stringInputElement: z.string().refine((value) => {
+          if (value === "") return true;
+          const element = stringToElement(value);
+          if (element == null) return false;
+          return isInputElement(element);
+        }, "Not Input Element"),
+      })
+    )
+    .min(1, "At least one URL is required"),
 });
 
 export type Options = z.infer<typeof optionsSchema>;
