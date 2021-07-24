@@ -8,6 +8,7 @@ import {
 } from "../utils/options";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { IoAdd } from "react-icons/io5";
 
 type OptionsFormProps = {
   className?: string;
@@ -37,16 +38,22 @@ export const OptionsForm = ({ className }: OptionsFormProps): JSX.Element => {
     });
   };
 
+  const addPage = () => {
+    if (loadedOptions == null) return;
+    const newPage: Options["pages"][0] = {
+      url: "https://google.com",
+      stringInputElement: "",
+    };
+    setLoadedOptions({ pages: [...loadedOptions.pages, newPage] });
+  };
+
   return (
     <div className={className} onSubmit={handleSubmit(save)}>
-      <form>
+      <form className="px-8 pt-6 pb-8 mb-4 bg-white rounded shadow-md">
         {loadedOptions != null &&
           loadedOptions.pages.map((option, index) => {
             return (
-              <div
-                key={index}
-                className="px-8 pt-6 pb-8 mb-4 bg-white rounded shadow-md"
-              >
+              <div key={index}>
                 <div className="mb-4">
                   <label
                     className="block mb-2 text-sm font-bold text-gray-700"
@@ -88,24 +95,30 @@ export const OptionsForm = ({ className }: OptionsFormProps): JSX.Element => {
                     </p>
                   )}
                 </div>
-                <div className="flex items-center">
-                  <button
-                    className="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline"
-                    type="submit"
-                    onBlur={() => setShowTooltip(false)}
-                  >
-                    Save
-                  </button>
-                  <div className={showTooltip ? "" : "invisible"}>
-                    <span className="ml-2 text-green-500 bg-gray-100 rounded shadow-lg tooltip">
-                      Saved!
-                    </span>
-                  </div>
-                </div>
               </div>
             );
           })}
+        <div className="flex items-center">
+          <button
+            className="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline"
+            type="submit"
+            onBlur={() => setShowTooltip(false)}
+          >
+            Save
+          </button>
+          <div className={showTooltip ? "" : "invisible"}>
+            <span className="ml-2 text-green-500 bg-gray-100 rounded shadow-lg tooltip">
+              Saved!
+            </span>
+          </div>
+        </div>
       </form>
+      <button
+        className="flex items-center ml-auto mr-auto bg-blue-500 border rounded-full w-9 h-9"
+        onClick={addPage}
+      >
+        <IoAdd size={36} color="white" />
+      </button>
     </div>
   );
 };
