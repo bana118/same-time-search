@@ -1,100 +1,72 @@
 import { useState, useEffect } from "react";
-import { loadOptions, saveOptions } from "../utils/options";
-import { z } from "zod";
-import { isInputElement, stringToElement } from "../utils/element";
-import { useForm } from "react-hook-form";
+import {
+  loadOptions,
+  optionsLabel,
+  Options,
+  optionsSchema,
+  saveOptions,
+  defaultStringInputElement,
+  defaultUrl,
+  maxUrls,
+  minUrls,
+} from "../utils/options";
+import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { IoAdd, IoClose } from "react-icons/io5";
 
 type OptionsFormProps = {
   className?: string;
 };
 
-const schema = z.object({
-  url: z.string().min(1, "URL is Required").url("Not URL"),
-  input: z.string().refine((value) => {
-    if (value === "") return true;
-    const element = stringToElement(value);
-    if (element == null) return false;
-    return isInputElement(element);
-  }, "Not Input Element"),
-});
-
-type Schema = z.infer<typeof schema>;
-
-const labels: { [P in keyof Schema]-?: string } = {
-  url: "URL(Required)",
-  input: "Input Element (Optional)",
-};
-
 export const OptionsForm = ({ className }: OptionsFormProps): JSX.Element => {
-  const [url, setUrl] = useState("");
-  const [stringInputElement, setStringInputElement] = useState("");
   const [showTooltip, setShowTooltip] = useState(false);
 
   const {
     register,
+    control,
     handleSubmit,
+    setValue,
     formState: { errors },
-  } = useForm<Schema>({
-    resolver: zodResolver(schema),
+  } = useForm<Options>({
+    resolver: zodResolver(optionsSchema),
+    defaultValues: {
+      pages: [
+        {
+          url: defaultUrl,
+          stringInputElement: defaultStringInputElement,
+        },
+      ],
+    },
+  });
+  const { fields, append, remove } = useFieldArray({
+    control,
+    name: "pages",
   });
 
   useEffect(() => {
     loadOptions((options) => {
-      setUrl(options.url);
-      setStringInputElement(options.stringInputElement);
+      setValue("pages", options.pages, { shouldValidate: true });
     });
   }, []);
 
-  const save = (data: Schema) => {
-    saveOptions({ url: data.url, stringInputElement: data.input }, () => {
+  const save = (data: Options) => {
+    saveOptions({ pages: data.pages }, () => {
       setShowTooltip(true);
     });
   };
 
+  const addPage = () => {
+    append({ url: defaultUrl, stringInputElement: defaultStringInputElement });
+  };
+
+  const removePage = (index: number) => {
+    remove(index);
+  };
+
   return (
     <div className={className} onSubmit={handleSubmit(save)}>
-      <form className="px-8 pt-6 pb-8 mb-4 bg-white rounded shadow-md">
-        <div className="mb-4">
-          <label
-            className="block mb-2 text-sm font-bold text-gray-700"
-            htmlFor="url"
-          >
-            {labels.url}
-          </label>
-          <input
-            className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-            id="url"
-            placeholder="https://google.com"
-            defaultValue={url}
-            {...register("url")}
-          />
-          {errors.url?.message && (
-            <p className="text-xs italic text-red-500">{errors.url.message}</p>
-          )}
-        </div>
-        <div className="mb-6">
-          <label
-            className="block mb-2 text-sm font-bold text-gray-700"
-            htmlFor="input"
-          >
-            {labels.input}
-          </label>
-          <textarea
-            className="w-full px-3 py-2 mb-3 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-            id="input"
-            placeholder='<input type="text" class="form-control" id="search" />'
-            rows={3}
-            defaultValue={stringInputElement}
-            {...register("input")}
-          />
-          {errors.input?.message && (
-            <p className="text-xs italic text-red-500">
-              {errors.input.message}
-            </p>
-          )}
-        </div>
-        <div className="flex items-center">
+      <form>
+        <div className="flex flex-col items-center mb-4">
           <button
             className="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline"
             type="submit"
@@ -103,12 +75,82 @@ export const OptionsForm = ({ className }: OptionsFormProps): JSX.Element => {
             Save
           </button>
           <div className={showTooltip ? "" : "invisible"}>
-            <span className="ml-2 text-green-500 bg-gray-100 rounded shadow-lg tooltip">
+            <span className="text-sm text-green-500 rounded shadow-lg tooltip">
               Saved!
             </span>
           </div>
         </div>
+        {fields.map((option, index) => {
+          return (
+            <div
+              key={index}
+              className="px-8 py-6 mb-4 bg-white rounded shadow-md"
+            >
+              <div className="flex">
+                <p className="text-sm">{index + 1}</p>
+                {fields.length > minUrls && (
+                  <button
+                    className="ml-auto"
+                    type="button"
+                    onClick={() => removePage(index)}
+                  >
+                    <IoClose size={24} />
+                  </button>
+                )}
+              </div>
+              <div className="mb-4">
+                <label
+                  className="block mb-2 text-sm font-bold text-gray-700"
+                  htmlFor="url"
+                >
+                  {optionsLabel.url}
+                </label>
+                <input
+                  className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                  id="url"
+                  placeholder="https://google.com"
+                  defaultValue={option.url}
+                  {...register(`pages.${index}.url`)}
+                />
+                {errors.pages?.[index]?.url?.message && (
+                  <p className="text-xs italic text-red-500">
+                    {errors.pages[index]?.url?.message}
+                  </p>
+                )}
+              </div>
+              <div className="mb-6">
+                <label
+                  className="block mb-2 text-sm font-bold text-gray-700"
+                  htmlFor="input"
+                >
+                  {optionsLabel.stringInputElement}
+                </label>
+                <textarea
+                  className="w-full px-3 py-2 mb-3 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+                  id="input"
+                  placeholder='<input type="text" class="form-control" id="search" />'
+                  rows={3}
+                  defaultValue={option.stringInputElement}
+                  {...register(`pages.${index}.stringInputElement`)}
+                />
+                {errors.pages?.[index]?.stringInputElement?.message && (
+                  <p className="text-xs italic text-red-500">
+                    {errors.pages[index]?.stringInputElement?.message}
+                  </p>
+                )}
+              </div>
+            </div>
+          );
+        })}
       </form>
+      {fields.length < maxUrls && (
+        <button
+          className="flex ml-auto mr-auto bg-blue-500 rounded-full"
+          onClick={addPage}
+        >
+          <IoAdd size={36} color="white" />
+        </button>
+      )}
     </div>
   );
 };

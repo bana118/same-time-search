@@ -4,35 +4,40 @@ import { loadOptions } from "../utils/options";
 
 export const Search = (): JSX.Element => {
   const [searchText, setSearchText] = useState("");
+
   const search = (event: React.FormEvent) => {
     event.preventDefault();
     if (searchText === "") return;
     loadOptions((options) => {
-      chrome.tabs.create(
-        {
-          url: options.url,
-          active: false,
-        },
-        (tab) => {
-          if (tab.id != null) {
-            const sendMessageToContentScript = (
-              tabId: number,
-              changeInfo: chrome.tabs.TabChangeInfo
-            ) => {
-              if (tabId === tab.id && changeInfo.status == "complete") {
-                const msg: Message = { searchText };
-                chrome.tabs.sendMessage(tabId, msg);
-                chrome.tabs.onUpdated.removeListener(
-                  sendMessageToContentScript
-                );
-              }
-            };
-            chrome.tabs.onUpdated.addListener(sendMessageToContentScript);
+      for (const page of options.pages) {
+        chrome.tabs.create(
+          {
+            url: page.url,
+            active: false,
+          },
+          (tab) => {
+            if (tab.id != null) {
+              const sendMessageToContentScript = (
+                tabId: number,
+                changeInfo: chrome.tabs.TabChangeInfo
+              ) => {
+                if (tabId === tab.id && changeInfo.status == "complete") {
+                  const stringInputElement = page.stringInputElement;
+                  const msg: Message = { searchText, stringInputElement };
+                  chrome.tabs.sendMessage(tabId, msg);
+                  chrome.tabs.onUpdated.removeListener(
+                    sendMessageToContentScript
+                  );
+                }
+              };
+              chrome.tabs.onUpdated.addListener(sendMessageToContentScript);
+            }
           }
-        }
-      );
+        );
+      }
     });
   };
+
   return (
     <form onSubmit={search}>
       <input
