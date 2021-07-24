@@ -5,6 +5,10 @@ import {
   Options,
   optionsSchema,
   saveOptions,
+  defaultStringInputElement,
+  defaultUrl,
+  maxUrls,
+  minUrls,
 } from "../utils/options";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -28,8 +32,8 @@ export const OptionsForm = ({ className }: OptionsFormProps): JSX.Element => {
     defaultValues: {
       pages: [
         {
-          url: "https://google.com",
-          stringInputElement: "",
+          url: defaultUrl,
+          stringInputElement: defaultStringInputElement,
         },
       ],
     },
@@ -52,7 +56,7 @@ export const OptionsForm = ({ className }: OptionsFormProps): JSX.Element => {
   };
 
   const addPage = () => {
-    append({ url: "https://google.com", stringInputElement: "" });
+    append({ url: defaultUrl, stringInputElement: defaultStringInputElement });
   };
 
   const removePage = (index: number) => {
@@ -84,13 +88,15 @@ export const OptionsForm = ({ className }: OptionsFormProps): JSX.Element => {
             >
               <div className="flex">
                 <p className="text-sm">{index + 1}</p>
-                <button
-                  className="ml-auto"
-                  type="button"
-                  onClick={() => removePage(index)}
-                >
-                  <IoClose size={24} />
-                </button>
+                {fields.length > minUrls && (
+                  <button
+                    className="ml-auto"
+                    type="button"
+                    onClick={() => removePage(index)}
+                  >
+                    <IoClose size={24} />
+                  </button>
+                )}
               </div>
               <div className="mb-4">
                 <label
@@ -137,12 +143,14 @@ export const OptionsForm = ({ className }: OptionsFormProps): JSX.Element => {
           );
         })}
       </form>
-      <button
-        className="flex ml-auto mr-auto bg-blue-500 rounded-full"
-        onClick={addPage}
-      >
-        <IoAdd size={36} color="white" />
-      </button>
+      {fields.length < maxUrls && (
+        <button
+          className="flex ml-auto mr-auto bg-blue-500 rounded-full"
+          onClick={addPage}
+        >
+          <IoAdd size={36} color="white" />
+        </button>
+      )}
     </div>
   );
 };

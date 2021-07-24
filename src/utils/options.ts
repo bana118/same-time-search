@@ -14,7 +14,8 @@ export const optionsSchema = z.object({
         }, "Not Input Element"),
       })
     )
-    .min(1, "At least one URL is required"),
+    .min(1, "At least one URL is required")
+    .max(10, "Maximum number of URLs is 10"),
 });
 
 export type Options = z.infer<typeof optionsSchema>;
@@ -36,3 +37,8 @@ export const loadOptions = (onLoad?: (options: Options) => void): void => {
     }
   });
 };
+
+export const defaultUrl = "https://google.com";
+export const defaultStringInputElement = "";
+export const maxUrls = 20;
+export const minUrls = 1;

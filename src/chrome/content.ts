@@ -19,7 +19,6 @@ chrome.runtime.onMessage.addListener((message: Message) => {
     // submit buttonがあればsubmitイベントが発火するのでsubmit buttonを使う
     submitButton.click();
   }
-  return true;
 });
 
 export {};
