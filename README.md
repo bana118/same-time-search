@@ -2,7 +2,10 @@
 
 Chrome extension to search on multiple sites at the same time
 
-# How to get started
+![2021-07-25 21_02_32-Same Time Search](https://user-images.githubusercontent.com/43720583/126902892-51f8c88d-69ae-4a8c-b3a5-3dc793c4f140.png)
+![2021-07-25 21_01_21-Same Time Search](https://user-images.githubusercontent.com/43720583/126902893-bcfb5849-e0d3-4582-ba01-6856939aa462.png)
+
+# Build
 
 ```
 yarn install --frozen-lockfile
