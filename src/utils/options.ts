@@ -8,7 +8,7 @@ export const minUrls = 1;
 const maxUrlLength = 1000;
 const maxInputElementLength = 1000;
 
-export const pagesSchema = z.object({
+export const groupSchema = z.object({
   pages: z
     .array(
       z.object({
@@ -35,16 +35,16 @@ export const pagesSchema = z.object({
     .max(maxUrls, `Maximum number of URLs is ${maxUrls}`),
 });
 
-export type Pages = z.infer<typeof pagesSchema>;
+export type Group = z.infer<typeof groupSchema>;
 
 export const optionsSchema = z.object({
-  groups: z.array(pagesSchema),
+  groups: z.array(groupSchema),
 });
 
 export type Options = z.infer<typeof optionsSchema>;
 
 export const pagesLabel: {
-  [P in keyof Pages["pages"][0]]-?: string;
+  [P in keyof Group["pages"][0]]-?: string;
 } = {
   url: "URL(Required)",
   stringInputElement: "Input Element (Optional)",

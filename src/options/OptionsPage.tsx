@@ -1,4 +1,4 @@
-import { OptionsForm } from "../components/OptionsForm";
+import { GroupTabs } from "../components/GroupTabs";
 
 export const OptionsPage = (): JSX.Element => {
   return (
@@ -7,7 +7,7 @@ export const OptionsPage = (): JSX.Element => {
         <h1 className="mb-2 text-xl font-bold text-center">
           Same Time Search Options
         </h1>
-        <OptionsForm className="w-9/12" />
+        <GroupTabs className="w-9/12" />
       </div>
     </div>
   );

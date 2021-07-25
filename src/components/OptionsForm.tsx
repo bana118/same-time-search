@@ -8,18 +8,22 @@ import {
   defaultUrl,
   maxUrls,
   minUrls,
-  pagesSchema,
-  Pages,
+  groupSchema,
+  Group,
 } from "../utils/options";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { IoAdd, IoClose } from "react-icons/io5";
 
-type OptionsFormProps = {
+type GroupFormProps = {
   className?: string;
+  tabIndex: number;
 };
 
-export const OptionsForm = ({ className }: OptionsFormProps): JSX.Element => {
+export const GroupForm = ({
+  className,
+  tabIndex,
+}: GroupFormProps): JSX.Element => {
   const [showTooltip, setShowTooltip] = useState(false);
 
   const {
@@ -28,8 +32,8 @@ export const OptionsForm = ({ className }: OptionsFormProps): JSX.Element => {
     handleSubmit,
     setValue,
     formState: { errors },
-  } = useForm<Pages>({
-    resolver: zodResolver(pagesSchema),
+  } = useForm<Group>({
+    resolver: zodResolver(groupSchema),
     defaultValues: {
       pages: [
         { url: defaultUrl, stringInputElement: defaultStringInputElement },
