@@ -56,8 +56,20 @@ export const saveOptions = (options: Options, onSave?: () => void): void => {
 
 export const loadOptions = (onLoad?: (options: Options) => void): void => {
   chrome.storage.sync.get(["groups"], (items) => {
-    const options = items as Options | undefined;
-    console.log(options);
+    if (items.groups == null) {
+      const defaultGroups: Group[] = [
+        {
+          pages: [
+            {
+              url: defaultUrl,
+              stringInputElement: defaultStringInputElement,
+            },
+          ],
+        },
+      ];
+      items.groups = defaultGroups;
+    }
+    const options = items as Options;
     if (onLoad != null && options != null) {
       onLoad(options);
     }

@@ -16,18 +16,22 @@ type GroupTabsProps = {
   className?: string;
 };
 
+// TODO タブ切り替えで編集中データが消えないようにする
 export const GroupTabs = ({ className }: GroupTabsProps): JSX.Element => {
   const [selected, setSelected] = useState(0);
   const [options, setOptions] = useState<Options | null>(null);
 
   useEffect(() => {
-    console.log("hoge");
-    console.log(options);
     loadOptions((options) => {
-      console.log(options);
       setOptions(options);
     });
   }, []);
+
+  useEffect(() => {
+    console.log(selected);
+    console.log(options?.groups);
+    console.log(options?.groups?.[selected]);
+  }, [selected]);
 
   const addTab = () => {
     if (options == null) return;
@@ -47,13 +51,26 @@ export const GroupTabs = ({ className }: GroupTabsProps): JSX.Element => {
     });
   };
 
+  const setGroup = (
+    group: Group,
+    index: number,
+    onSet?: (newGroups: Group[]) => void
+  ) => {
+    saveGroup(group, index, (newGroups) => {
+      setOptions({ groups: newGroups });
+      if (onSet != null) {
+        onSet(newGroups);
+      }
+    });
+  };
+
   if (options == null) return <div></div>;
 
   return (
     <div className={className}>
       <div className="bg-white">
         <nav className="flex flex-col sm:flex-row">
-          {options.groups.map((group, index) => {
+          {options.groups.map((_group, index) => {
             if (index === selected) {
               return (
                 <div key={index} className="border-r">
@@ -103,7 +120,11 @@ export const GroupTabs = ({ className }: GroupTabsProps): JSX.Element => {
           </button>
         </nav>
       </div>
-      <GroupForm tabIndex={selected} />
+      <GroupForm
+        tabIndex={selected}
+        group={options.groups[selected]}
+        setGroup={setGroup}
+      />
     </div>
   );
 };

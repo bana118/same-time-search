@@ -1,9 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
-  loadOptions,
   pagesLabel,
-  Options,
-  saveOptions,
   defaultStringInputElement,
   defaultUrl,
   maxUrls,
@@ -14,15 +11,24 @@ import {
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { IoAdd, IoClose } from "react-icons/io5";
+import { useEffect } from "react";
 
 type GroupFormProps = {
   className?: string;
   tabIndex: number;
+  group: Group;
+  setGroup: (
+    group: Group,
+    index: number,
+    onSet?: ((newGroups: Group[]) => void) | undefined
+  ) => void;
 };
 
 export const GroupForm = ({
   className,
   tabIndex,
+  group,
+  setGroup,
 }: GroupFormProps): JSX.Element => {
   const [showTooltip, setShowTooltip] = useState(false);
 
@@ -34,11 +40,7 @@ export const GroupForm = ({
     formState: { errors },
   } = useForm<Group>({
     resolver: zodResolver(groupSchema),
-    defaultValues: {
-      pages: [
-        { url: defaultUrl, stringInputElement: defaultStringInputElement },
-      ],
-    },
+    defaultValues: group,
   });
   const { fields, append, remove } = useFieldArray({
     control,
@@ -46,13 +48,11 @@ export const GroupForm = ({
   });
 
   useEffect(() => {
-    loadOptions((options) => {
-      setValue("pages", options.groups[0].pages, { shouldValidate: true });
-    });
-  }, []);
+    setValue("pages", group.pages, { shouldValidate: true });
+  }, [group]);
 
-  const save = (data: Options["groups"][0]) => {
-    saveOptions({ groups: [{ pages: data.pages }] }, () => {
+  const save = (data: Group) => {
+    setGroup(data, tabIndex, () => {
       setShowTooltip(true);
     });
   };
