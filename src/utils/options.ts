@@ -5,13 +5,20 @@ export const optionsSchema = z.object({
   pages: z
     .array(
       z.object({
-        url: z.string().min(1, "URL is Required").url("Not URL"),
-        stringInputElement: z.string().refine((value) => {
-          if (value === "") return true;
-          const element = stringToElement(value);
-          if (element == null) return false;
-          return isInputElement(element);
-        }, "Not Input Element"),
+        url: z
+          .string()
+          .min(1, "URL is Required")
+          .url("Not URL")
+          .max(1000, "Maximum URL length is 1000"),
+        stringInputElement: z
+          .string()
+          .max(1000, "Maximum Input Element length is 1000")
+          .refine((value) => {
+            if (value === "") return true;
+            const element = stringToElement(value);
+            if (element == null) return false;
+            return isInputElement(element);
+          }, "Not Input Element"),
       })
     )
     .min(1, "At least one URL is required")

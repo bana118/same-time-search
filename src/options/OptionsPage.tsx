@@ -1,7 +1,6 @@
 import { OptionsForm } from "../components/OptionsForm";
 
 export const OptionsPage = (): JSX.Element => {
-  // TODO 複数のURLのオプションを設定
   return (
     <div className="container mx-auto">
       <div className="flex flex-col items-center m-3">
