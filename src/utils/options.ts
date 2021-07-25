@@ -55,10 +55,55 @@ export const saveOptions = (options: Options, onSave?: () => void): void => {
 };
 
 export const loadOptions = (onLoad?: (options: Options) => void): void => {
-  chrome.storage.sync.get(["pages"], (items) => {
-    const options = items as Options;
-    if (onLoad != null && options.groups != null) {
+  chrome.storage.sync.get(["groups"], (items) => {
+    const options = items as Options | undefined;
+    console.log(options);
+    if (onLoad != null && options != null) {
       onLoad(options);
     }
+  });
+};
+
+export const saveGroup = (
+  group: Group,
+  index: number,
+  onSave?: (newGroups: Group[]) => void
+): void => {
+  loadOptions((options) => {
+    if (options.groups.length + 1 < index) return;
+    // Add Group
+    if (options.groups.length + 1 === index) {
+      const newGroups = [...options.groups, group];
+      saveOptions({ groups: newGroups }, () => {
+        if (onSave != null) {
+          onSave(newGroups);
+        }
+      });
+      return;
+    }
+    // Modify Group
+    const newGroups = options.groups;
+    newGroups[index] = group;
+    saveOptions({ groups: newGroups }, () => {
+      if (onSave != null) {
+        onSave(newGroups);
+      }
+    });
+  });
+};
+
+export const removeGroup = (
+  index: number,
+  onRemove?: (newGroups: Group[]) => void
+): void => {
+  loadOptions((options) => {
+    if (options.groups.length < index) return;
+    const newGroups = [...options.groups];
+    newGroups.splice(index, 1);
+    saveOptions({ groups: newGroups }, () => {
+      if (onRemove != null) {
+        onRemove(newGroups);
+      }
+    });
   });
 };

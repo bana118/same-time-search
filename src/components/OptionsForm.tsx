@@ -52,7 +52,6 @@ export const GroupForm = ({
   }, []);
 
   const save = (data: Options["groups"][0]) => {
-    console.log(data);
     saveOptions({ groups: [{ pages: data.pages }] }, () => {
       setShowTooltip(true);
     });

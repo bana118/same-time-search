@@ -1,6 +1,16 @@
 import { useState } from "react";
 import { GroupForm } from "./OptionsForm";
 import { IoAdd, IoClose } from "react-icons/io5";
+import {
+  defaultStringInputElement,
+  defaultUrl,
+  Group,
+  loadOptions,
+  Options,
+  removeGroup,
+  saveGroup,
+} from "../utils/options";
+import { useEffect } from "react";
 
 type GroupTabsProps = {
   className?: string;
@@ -8,33 +18,57 @@ type GroupTabsProps = {
 
 export const GroupTabs = ({ className }: GroupTabsProps): JSX.Element => {
   const [selected, setSelected] = useState(0);
-  const array = [0, 1, 2, 3];
+  const [options, setOptions] = useState<Options | null>(null);
+
+  useEffect(() => {
+    console.log("hoge");
+    console.log(options);
+    loadOptions((options) => {
+      console.log(options);
+      setOptions(options);
+    });
+  }, []);
+
   const addTab = () => {
-    console.log("add");
+    if (options == null) return;
+    const newGroup: Group = {
+      pages: [
+        { url: defaultUrl, stringInputElement: defaultStringInputElement },
+      ],
+    };
+    saveGroup(newGroup, options.groups.length, (newGroups) => {
+      setOptions({ groups: newGroups });
+    });
   };
   const removeTab = (index: number) => {
-    console.log(`remove ${index}`);
+    if (options == null) return;
+    removeGroup(index, (newGroups) => {
+      setOptions({ groups: newGroups });
+    });
   };
+
+  if (options == null) return <div></div>;
+
   return (
     <div className={className}>
       <div className="bg-white">
         <nav className="flex flex-col sm:flex-row">
-          {array.map((i) => {
-            if (i === selected) {
+          {options.groups.map((group, index) => {
+            if (index === selected) {
               return (
-                <div key={i} className="border-r">
+                <div key={index} className="border-r">
                   <div className="flex px-6 py-4 border-b-2 border-blue-500">
                     <button
                       className="block mr-5 font-medium text-blue-500"
                       onClick={() => {
-                        setSelected(i);
+                        setSelected(index);
                       }}
                     >
-                      Tab {i + 1}
+                      Tab {index + 1}
                     </button>
                     <button
                       className="block text-gray-600  hover:text-blue-500"
-                      onClick={() => removeTab(i)}
+                      onClick={() => removeTab(index)}
                     >
                       <IoClose size={18} />
                     </button>
@@ -43,18 +77,18 @@ export const GroupTabs = ({ className }: GroupTabsProps): JSX.Element => {
               );
             }
             return (
-              <div key={i} className="flex px-6 py-4 border-r">
+              <div key={index} className="flex px-6 py-4 border-r">
                 <button
                   className="block mr-5 text-gray-600 hover:text-blue-500"
                   onClick={() => {
-                    setSelected(i);
+                    setSelected(index);
                   }}
                 >
-                  Tab {i + 1}
+                  Tab {index + 1}
                 </button>
                 <button
                   className="block text-gray-600  hover:text-blue-500"
-                  onClick={() => removeTab(i)}
+                  onClick={() => removeTab(index)}
                 >
                   <IoClose size={18} />
                 </button>
