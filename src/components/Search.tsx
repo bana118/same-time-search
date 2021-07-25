@@ -54,35 +54,7 @@ export const Search = (): JSX.Element => {
       group.pages.map((page) => createChromeTab(page, searchText))
     );
     const groupId = await chrome.tabs.group({ tabIds });
-    console.log(groupId);
-    console.log(chrome.tabGroups);
     await chrome.tabGroups.update(groupId, { title: group.name });
-    // for (const page of group.pages) {
-    //   chrome.tabs.create(
-    //     {
-    //       url: page.url,
-    //       active: false,
-    //     },
-    //     (tab) => {
-    //       if (tab.id != null) {
-    //         const sendMessageToContentScript = (
-    //           tabId: number,
-    //           changeInfo: chrome.tabs.TabChangeInfo
-    //         ) => {
-    //           if (tabId === tab.id && changeInfo.status == "complete") {
-    //             const stringInputElement = page.stringInputElement;
-    //             const msg: Message = { searchText, stringInputElement };
-    //             chrome.tabs.sendMessage(tabId, msg);
-    //             chrome.tabs.onUpdated.removeListener(
-    //               sendMessageToContentScript
-    //             );
-    //           }
-    //         };
-    //         chrome.tabs.onUpdated.addListener(sendMessageToContentScript);
-    //       }
-    //     }
-    //   );
-    // }
   };
 
   if (options == null) return <div></div>;
