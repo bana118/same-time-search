@@ -10,6 +10,8 @@ export const minUrls = 1;
 const maxUrlLength = 1000;
 const maxInputElementLength = 1000;
 const maxNameLength = 100;
+export const maxGroups = 10;
+export const minGroups = 1;
 
 export const groupSchema = z.object({
   name: z

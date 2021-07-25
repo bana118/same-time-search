@@ -162,7 +162,7 @@ export const GroupForm = ({
       </form>
       {fields.length < maxUrls && (
         <button
-          className="flex ml-auto mr-auto bg-blue-500 rounded-full"
+          className="flex ml-auto mr-auto bg-blue-500 rounded-full hover:bg-blue-700"
           onClick={addPage}
         >
           <IoAdd size={36} color="white" />

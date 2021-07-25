@@ -7,6 +7,8 @@ import {
   defaultUrl,
   Group,
   loadOptions,
+  maxGroups,
+  minGroups,
   Options,
   removeGroup,
   saveGroup,
@@ -87,12 +89,14 @@ export const GroupTabs = ({ className }: GroupTabsProps): JSX.Element => {
                     >
                       {group.name}
                     </button>
-                    <button
-                      className="block text-gray-600  hover:text-blue-500"
-                      onClick={() => removeTab(index)}
-                    >
-                      <IoClose size={18} />
-                    </button>
+                    {options.groups.length > minGroups && (
+                      <button
+                        className="block text-gray-600  hover:text-blue-500"
+                        onClick={() => removeTab(index)}
+                      >
+                        <IoClose size={18} />
+                      </button>
+                    )}
                   </div>
                 </div>
               );
@@ -107,21 +111,25 @@ export const GroupTabs = ({ className }: GroupTabsProps): JSX.Element => {
                 >
                   {group.name}
                 </button>
-                <button
-                  className="block text-gray-600  hover:text-blue-500"
-                  onClick={() => removeTab(index)}
-                >
-                  <IoClose size={18} />
-                </button>
+                {options.groups.length > minGroups && (
+                  <button
+                    className="block text-gray-600  hover:text-blue-500"
+                    onClick={() => removeTab(index)}
+                  >
+                    <IoClose size={18} />
+                  </button>
+                )}
               </div>
             );
           })}
-          <button
-            className="block px-6 py-4 text-gray-600  hover:text-blue-500"
-            onClick={addTab}
-          >
-            <IoAdd size={24} />
-          </button>
+          {options.groups.length < maxGroups && (
+            <button
+              className="block px-6 py-4 text-gray-600  hover:text-blue-500"
+              onClick={addTab}
+            >
+              <IoAdd size={24} />
+            </button>
+          )}
         </nav>
       </div>
       <GroupForm
