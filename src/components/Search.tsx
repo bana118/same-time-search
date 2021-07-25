@@ -1,7 +1,39 @@
 import { useEffect, useState } from "react";
 import { Message } from "../utils/message";
-import { loadOptions, Options } from "../utils/options";
+import { Group, loadOptions, Options } from "../utils/options";
 import { IoChevronDown } from "react-icons/io5";
+
+const createChromeTab = async (
+  page: Group["pages"][0],
+  searchText: string
+): Promise<number> => {
+  return new Promise((resolve, reject) => {
+    chrome.tabs.create(
+      {
+        url: page.url,
+        active: false,
+      },
+      (tab) => {
+        if (tab.id != null) {
+          const sendMessageToContentScript = (
+            tabId: number,
+            changeInfo: chrome.tabs.TabChangeInfo
+          ) => {
+            if (tabId === tab.id && changeInfo.status == "complete") {
+              const stringInputElement = page.stringInputElement;
+              const msg: Message = { searchText, stringInputElement };
+              chrome.tabs.sendMessage(tabId, msg);
+              chrome.tabs.onUpdated.removeListener(sendMessageToContentScript);
+            }
+          };
+          chrome.tabs.onUpdated.addListener(sendMessageToContentScript);
+          resolve(tab.id);
+        }
+        reject(new Error("Create Tab Failed"));
+      }
+    );
+  });
+};
 
 export const Search = (): JSX.Element => {
   const [searchText, setSearchText] = useState("");
@@ -14,36 +46,43 @@ export const Search = (): JSX.Element => {
     });
   }, []);
 
-  const search = (event: React.FormEvent) => {
+  const search = async (event: React.FormEvent) => {
     event.preventDefault();
     if (searchText === "" || options == null) return;
     const group = options.groups[selected];
-    for (const page of group.pages) {
-      chrome.tabs.create(
-        {
-          url: page.url,
-          active: false,
-        },
-        (tab) => {
-          if (tab.id != null) {
-            const sendMessageToContentScript = (
-              tabId: number,
-              changeInfo: chrome.tabs.TabChangeInfo
-            ) => {
-              if (tabId === tab.id && changeInfo.status == "complete") {
-                const stringInputElement = page.stringInputElement;
-                const msg: Message = { searchText, stringInputElement };
-                chrome.tabs.sendMessage(tabId, msg);
-                chrome.tabs.onUpdated.removeListener(
-                  sendMessageToContentScript
-                );
-              }
-            };
-            chrome.tabs.onUpdated.addListener(sendMessageToContentScript);
-          }
-        }
-      );
-    }
+    const tabIds = await Promise.all(
+      group.pages.map((page) => createChromeTab(page, searchText))
+    );
+    const groupId = await chrome.tabs.group({ tabIds });
+    console.log(groupId);
+    console.log(chrome.tabGroups);
+    await chrome.tabGroups.update(groupId, { title: group.name });
+    // for (const page of group.pages) {
+    //   chrome.tabs.create(
+    //     {
+    //       url: page.url,
+    //       active: false,
+    //     },
+    //     (tab) => {
+    //       if (tab.id != null) {
+    //         const sendMessageToContentScript = (
+    //           tabId: number,
+    //           changeInfo: chrome.tabs.TabChangeInfo
+    //         ) => {
+    //           if (tabId === tab.id && changeInfo.status == "complete") {
+    //             const stringInputElement = page.stringInputElement;
+    //             const msg: Message = { searchText, stringInputElement };
+    //             chrome.tabs.sendMessage(tabId, msg);
+    //             chrome.tabs.onUpdated.removeListener(
+    //               sendMessageToContentScript
+    //             );
+    //           }
+    //         };
+    //         chrome.tabs.onUpdated.addListener(sendMessageToContentScript);
+    //       }
+    //     }
+    //   );
+    // }
   };
 
   if (options == null) return <div></div>;
