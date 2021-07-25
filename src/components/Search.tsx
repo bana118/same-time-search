@@ -9,7 +9,7 @@ export const Search = (): JSX.Element => {
     event.preventDefault();
     if (searchText === "") return;
     loadOptions((options) => {
-      for (const page of options.pages) {
+      for (const page of options.groups[0]["pages"]) {
         chrome.tabs.create(
           {
             url: page.url,

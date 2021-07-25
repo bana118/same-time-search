@@ -1,14 +1,15 @@
 import { useState, useEffect } from "react";
 import {
   loadOptions,
-  optionsLabel,
+  pagesLabel,
   Options,
-  optionsSchema,
   saveOptions,
   defaultStringInputElement,
   defaultUrl,
   maxUrls,
   minUrls,
+  pagesSchema,
+  Pages,
 } from "../utils/options";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -27,14 +28,11 @@ export const OptionsForm = ({ className }: OptionsFormProps): JSX.Element => {
     handleSubmit,
     setValue,
     formState: { errors },
-  } = useForm<Options>({
-    resolver: zodResolver(optionsSchema),
+  } = useForm<Pages>({
+    resolver: zodResolver(pagesSchema),
     defaultValues: {
       pages: [
-        {
-          url: defaultUrl,
-          stringInputElement: defaultStringInputElement,
-        },
+        { url: defaultUrl, stringInputElement: defaultStringInputElement },
       ],
     },
   });
@@ -45,12 +43,13 @@ export const OptionsForm = ({ className }: OptionsFormProps): JSX.Element => {
 
   useEffect(() => {
     loadOptions((options) => {
-      setValue("pages", options.pages, { shouldValidate: true });
+      setValue("pages", options.groups[0].pages, { shouldValidate: true });
     });
   }, []);
 
-  const save = (data: Options) => {
-    saveOptions({ pages: data.pages }, () => {
+  const save = (data: Options["groups"][0]) => {
+    console.log(data);
+    saveOptions({ groups: [{ pages: data.pages }] }, () => {
       setShowTooltip(true);
     });
   };
@@ -103,7 +102,7 @@ export const OptionsForm = ({ className }: OptionsFormProps): JSX.Element => {
                   className="block mb-2 text-sm font-bold text-gray-700"
                   htmlFor="url"
                 >
-                  {optionsLabel.url}
+                  {pagesLabel.url}
                 </label>
                 <input
                   className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
@@ -123,7 +122,7 @@ export const OptionsForm = ({ className }: OptionsFormProps): JSX.Element => {
                   className="block mb-2 text-sm font-bold text-gray-700"
                   htmlFor="input"
                 >
-                  {optionsLabel.stringInputElement}
+                  {pagesLabel.stringInputElement}
                 </label>
                 <textarea
                   className="w-full px-3 py-2 mb-3 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"

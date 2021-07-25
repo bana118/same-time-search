@@ -1,7 +1,14 @@
 import { z } from "zod";
 import { isInputElement, stringToElement } from "./element";
 
-export const optionsSchema = z.object({
+export const defaultUrl = "https://google.com";
+export const defaultStringInputElement = "";
+export const maxUrls = 20;
+export const minUrls = 1;
+const maxUrlLength = 1000;
+const maxInputElementLength = 1000;
+
+export const pagesSchema = z.object({
   pages: z
     .array(
       z.object({
@@ -9,10 +16,13 @@ export const optionsSchema = z.object({
           .string()
           .min(1, "URL is Required")
           .url("Not URL")
-          .max(1000, "Maximum URL length is 1000"),
+          .max(maxUrlLength, `Maximum URL length is 1000 ${maxUrlLength}`),
         stringInputElement: z
           .string()
-          .max(1000, "Maximum Input Element length is 1000")
+          .max(
+            maxInputElementLength,
+            `Maximum Input Element length is ${maxInputElementLength}`
+          )
           .refine((value) => {
             if (value === "") return true;
             const element = stringToElement(value);
@@ -22,12 +32,20 @@ export const optionsSchema = z.object({
       })
     )
     .min(1, "At least one URL is required")
-    .max(10, "Maximum number of URLs is 10"),
+    .max(maxUrls, `Maximum number of URLs is ${maxUrls}`),
+});
+
+export type Pages = z.infer<typeof pagesSchema>;
+
+export const optionsSchema = z.object({
+  groups: z.array(pagesSchema),
 });
 
 export type Options = z.infer<typeof optionsSchema>;
 
-export const optionsLabel: { [P in keyof Options["pages"][0]]-?: string } = {
+export const pagesLabel: {
+  [P in keyof Pages["pages"][0]]-?: string;
+} = {
   url: "URL(Required)",
   stringInputElement: "Input Element (Optional)",
 };
@@ -38,14 +56,9 @@ export const saveOptions = (options: Options, onSave?: () => void): void => {
 
 export const loadOptions = (onLoad?: (options: Options) => void): void => {
   chrome.storage.sync.get(["pages"], (items) => {
-    if (onLoad != null) {
-      const options = items as Options;
+    const options = items as Options;
+    if (onLoad != null && options.groups != null) {
       onLoad(options);
     }
   });
 };
-
-export const defaultUrl = "https://google.com";
-export const defaultStringInputElement = "";
-export const maxUrls = 20;
-export const minUrls = 1;
