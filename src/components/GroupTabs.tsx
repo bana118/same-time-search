@@ -2,6 +2,7 @@ import { useState } from "react";
 import { GroupForm } from "./OptionsForm";
 import { IoAdd, IoClose } from "react-icons/io5";
 import {
+  defaultGroupName,
   defaultStringInputElement,
   defaultUrl,
   Group,
@@ -36,17 +37,20 @@ export const GroupTabs = ({ className }: GroupTabsProps): JSX.Element => {
   const addTab = () => {
     if (options == null) return;
     const newGroup: Group = {
+      name: defaultGroupName,
       pages: [
         { url: defaultUrl, stringInputElement: defaultStringInputElement },
       ],
     };
     saveGroup(newGroup, options.groups.length, (newGroups) => {
       setOptions({ groups: newGroups });
+      setSelected(options.groups.length);
     });
   };
   const removeTab = (index: number) => {
     if (options == null) return;
     removeGroup(index, (newGroups) => {
+      setSelected(index - 1);
       setOptions({ groups: newGroups });
     });
   };
@@ -70,7 +74,7 @@ export const GroupTabs = ({ className }: GroupTabsProps): JSX.Element => {
     <div className={className}>
       <div className="bg-white">
         <nav className="flex flex-col sm:flex-row">
-          {options.groups.map((_group, index) => {
+          {options.groups.map((group, index) => {
             if (index === selected) {
               return (
                 <div key={index} className="border-r">
@@ -81,7 +85,7 @@ export const GroupTabs = ({ className }: GroupTabsProps): JSX.Element => {
                         setSelected(index);
                       }}
                     >
-                      Tab {index + 1}
+                      {group.name}
                     </button>
                     <button
                       className="block text-gray-600  hover:text-blue-500"
@@ -101,7 +105,7 @@ export const GroupTabs = ({ className }: GroupTabsProps): JSX.Element => {
                     setSelected(index);
                   }}
                 >
-                  Tab {index + 1}
+                  {group.name}
                 </button>
                 <button
                   className="block text-gray-600  hover:text-blue-500"

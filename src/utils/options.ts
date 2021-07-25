@@ -1,14 +1,21 @@
 import { z } from "zod";
 import { isInputElement, stringToElement } from "./element";
 
+export const GroupNameLabel = "Tab Name";
 export const defaultUrl = "https://google.com";
 export const defaultStringInputElement = "";
+export const defaultGroupName = "Search Group";
 export const maxUrls = 20;
 export const minUrls = 1;
 const maxUrlLength = 1000;
 const maxInputElementLength = 1000;
+const maxNameLength = 100;
 
 export const groupSchema = z.object({
+  name: z
+    .string()
+    .min(1, "Name is Required")
+    .max(maxNameLength, `Maximum URL length is ${maxNameLength}`),
   pages: z
     .array(
       z.object({
@@ -16,7 +23,7 @@ export const groupSchema = z.object({
           .string()
           .min(1, "URL is Required")
           .url("Not URL")
-          .max(maxUrlLength, `Maximum URL length is 1000 ${maxUrlLength}`),
+          .max(maxUrlLength, `Maximum URL length is ${maxUrlLength}`),
         stringInputElement: z
           .string()
           .max(
@@ -37,11 +44,7 @@ export const groupSchema = z.object({
 
 export type Group = z.infer<typeof groupSchema>;
 
-export const optionsSchema = z.object({
-  groups: z.array(groupSchema),
-});
-
-export type Options = z.infer<typeof optionsSchema>;
+export type Options = { groups: Group[] };
 
 export const pagesLabel: {
   [P in keyof Group["pages"][0]]-?: string;
@@ -59,6 +62,7 @@ export const loadOptions = (onLoad?: (options: Options) => void): void => {
     if (items.groups == null) {
       const defaultGroups: Group[] = [
         {
+          name: defaultGroupName,
           pages: [
             {
               url: defaultUrl,

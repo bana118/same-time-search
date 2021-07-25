@@ -7,6 +7,7 @@ import {
   minUrls,
   groupSchema,
   Group,
+  GroupNameLabel,
 } from "../utils/options";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -40,7 +41,6 @@ export const GroupForm = ({
     formState: { errors },
   } = useForm<Group>({
     resolver: zodResolver(groupSchema),
-    defaultValues: group,
   });
   const { fields, append, remove } = useFieldArray({
     control,
@@ -49,6 +49,7 @@ export const GroupForm = ({
 
   useEffect(() => {
     setValue("pages", group.pages, { shouldValidate: true });
+    setValue("name", group.name, { shouldValidate: true });
   }, [group]);
 
   const save = (data: Group) => {
@@ -82,6 +83,22 @@ export const GroupForm = ({
             </span>
           </div>
         </div>
+        <div className="mb-4">
+          <label
+            className="block mb-2 text-sm font-bold text-gray-700"
+            htmlFor="name"
+          >
+            {GroupNameLabel}
+          </label>
+          <input
+            className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+            id="name"
+            {...register("name")}
+          />
+          {errors.name?.message && (
+            <p className="text-xs italic text-red-500">{errors.name.message}</p>
+          )}
+        </div>
         {fields.map((option, index) => {
           return (
             <div
@@ -111,7 +128,6 @@ export const GroupForm = ({
                   className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
                   id="url"
                   placeholder="https://google.com"
-                  defaultValue={option.url}
                   {...register(`pages.${index}.url`)}
                 />
                 {errors.pages?.[index]?.url?.message && (
@@ -132,7 +148,6 @@ export const GroupForm = ({
                   id="input"
                   placeholder='<input type="text" class="form-control" id="search" />'
                   rows={3}
-                  defaultValue={option.stringInputElement}
                   {...register(`pages.${index}.stringInputElement`)}
                 />
                 {errors.pages?.[index]?.stringInputElement?.message && (
