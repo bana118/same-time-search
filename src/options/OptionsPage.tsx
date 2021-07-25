@@ -1,14 +1,16 @@
-import { OptionsForm } from "../components/OptionsForm";
+import { GroupTabs } from "../components/GroupTabs";
 
 export const OptionsPage = (): JSX.Element => {
-  // TODO 複数のURLのオプションを設定
   return (
     <div className="container mx-auto">
       <div className="flex flex-col items-center m-3">
         <h1 className="mb-2 text-xl font-bold text-center">
           Same Time Search Options
         </h1>
-        <OptionsForm className="w-9/12" />
+        <h2 className="mb-2 text-lg font-bold text-center">
+          Caution: The data being edited will be deleted when you switch the tab
+        </h2>
+        <GroupTabs className="w-9/12" />
       </div>
     </div>
   );

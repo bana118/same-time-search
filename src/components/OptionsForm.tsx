@@ -1,24 +1,36 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
-  loadOptions,
-  optionsLabel,
-  Options,
-  optionsSchema,
-  saveOptions,
+  pagesLabel,
   defaultStringInputElement,
   defaultUrl,
   maxUrls,
   minUrls,
+  groupSchema,
+  Group,
+  GroupNameLabel,
 } from "../utils/options";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { IoAdd, IoClose } from "react-icons/io5";
+import { useEffect } from "react";
 
-type OptionsFormProps = {
+type GroupFormProps = {
   className?: string;
+  tabIndex: number;
+  group: Group;
+  setGroup: (
+    group: Group,
+    index: number,
+    onSet?: ((newGroups: Group[]) => void) | undefined
+  ) => void;
 };
 
-export const OptionsForm = ({ className }: OptionsFormProps): JSX.Element => {
+export const GroupForm = ({
+  className,
+  tabIndex,
+  group,
+  setGroup,
+}: GroupFormProps): JSX.Element => {
   const [showTooltip, setShowTooltip] = useState(false);
 
   const {
@@ -27,16 +39,8 @@ export const OptionsForm = ({ className }: OptionsFormProps): JSX.Element => {
     handleSubmit,
     setValue,
     formState: { errors },
-  } = useForm<Options>({
-    resolver: zodResolver(optionsSchema),
-    defaultValues: {
-      pages: [
-        {
-          url: defaultUrl,
-          stringInputElement: defaultStringInputElement,
-        },
-      ],
-    },
+  } = useForm<Group>({
+    resolver: zodResolver(groupSchema),
   });
   const { fields, append, remove } = useFieldArray({
     control,
@@ -44,13 +48,12 @@ export const OptionsForm = ({ className }: OptionsFormProps): JSX.Element => {
   });
 
   useEffect(() => {
-    loadOptions((options) => {
-      setValue("pages", options.pages, { shouldValidate: true });
-    });
-  }, []);
+    setValue("pages", group.pages, { shouldValidate: true });
+    setValue("name", group.name, { shouldValidate: true });
+  }, [group]);
 
-  const save = (data: Options) => {
-    saveOptions({ pages: data.pages }, () => {
+  const save = (data: Group) => {
+    setGroup(data, tabIndex, () => {
       setShowTooltip(true);
     });
   };
@@ -80,6 +83,22 @@ export const OptionsForm = ({ className }: OptionsFormProps): JSX.Element => {
             </span>
           </div>
         </div>
+        <div className="mb-4">
+          <label
+            className="block mb-2 text-sm font-bold text-gray-700"
+            htmlFor="name"
+          >
+            {GroupNameLabel}
+          </label>
+          <input
+            className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
+            id="name"
+            {...register("name")}
+          />
+          {errors.name?.message && (
+            <p className="text-xs italic text-red-500">{errors.name.message}</p>
+          )}
+        </div>
         {fields.map((option, index) => {
           return (
             <div
@@ -103,13 +122,12 @@ export const OptionsForm = ({ className }: OptionsFormProps): JSX.Element => {
                   className="block mb-2 text-sm font-bold text-gray-700"
                   htmlFor="url"
                 >
-                  {optionsLabel.url}
+                  {pagesLabel.url}
                 </label>
                 <input
                   className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
                   id="url"
                   placeholder="https://google.com"
-                  defaultValue={option.url}
                   {...register(`pages.${index}.url`)}
                 />
                 {errors.pages?.[index]?.url?.message && (
@@ -123,14 +141,13 @@ export const OptionsForm = ({ className }: OptionsFormProps): JSX.Element => {
                   className="block mb-2 text-sm font-bold text-gray-700"
                   htmlFor="input"
                 >
-                  {optionsLabel.stringInputElement}
+                  {pagesLabel.stringInputElement}
                 </label>
                 <textarea
                   className="w-full px-3 py-2 mb-3 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
                   id="input"
                   placeholder='<input type="text" class="form-control" id="search" />'
                   rows={3}
-                  defaultValue={option.stringInputElement}
                   {...register(`pages.${index}.stringInputElement`)}
                 />
                 {errors.pages?.[index]?.stringInputElement?.message && (
@@ -145,7 +162,7 @@ export const OptionsForm = ({ className }: OptionsFormProps): JSX.Element => {
       </form>
       {fields.length < maxUrls && (
         <button
-          className="flex ml-auto mr-auto bg-blue-500 rounded-full"
+          className="flex ml-auto mr-auto bg-blue-500 rounded-full hover:bg-blue-700"
           onClick={addPage}
         >
           <IoAdd size={36} color="white" />
