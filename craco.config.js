@@ -27,6 +27,7 @@ module.exports = {
           ...webpackConfig.optimization,
           runtimeChunk: false,
         },
+        devtool: false,
         plugins: [
           ...webpackConfig.plugins,
           new HtmlWebpackPlugin(
