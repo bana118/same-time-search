@@ -30,12 +30,6 @@ export const GroupTabs = ({ className }: GroupTabsProps): JSX.Element => {
     });
   }, []);
 
-  useEffect(() => {
-    console.log(selected);
-    console.log(options?.groups);
-    console.log(options?.groups?.[selected]);
-  }, [selected]);
-
   const addTab = () => {
     if (options == null) return;
     const newGroup: Group = {
