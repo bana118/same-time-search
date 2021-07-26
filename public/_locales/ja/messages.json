@@ -1,0 +1,74 @@
+{
+  "popupSearchPlaceHolder": {
+    "message": "キーワードを入力"
+  },
+  "popupSearchGroupLabel": {
+    "message": "検索グループ"
+  },
+  "popupSearchButtonLabel": {
+    "message": "検索"
+  },
+  "optionsTitle": {
+    "message": "Same Time Search 設定"
+  },
+  "optionsCaution": {
+    "message": "注意: タブを切り替えると保存していないデータは消去されます"
+  },
+  "optionsSaveButtonLabel": {
+    "message": "保存"
+  },
+  "optionsSavedTooltip": {
+    "message": "保存しました！"
+  },
+  "optionsGroupNameLabel": {
+    "message": "グループ名"
+  },
+  "optionsDefaultGroupName": {
+    "message": "検索グループ"
+  },
+  "optionsUrlLabel": {
+    "message": "URL (必須)"
+  },
+  "optionsInputElementLabel": {
+    "message": "Input要素 (オプション)"
+  },
+  "optionsGroupNameRequire": {
+    "message": "グループ名は必須です"
+  },
+  "optionsGroupNameMax": {
+    "message": "グループ名は$1文字以下にしてください",
+    "placeholders": {
+      "target": { "content": "$1" }
+    }
+  },
+  "optionsUrlRequire": {
+    "message": "URLは必須です"
+  },
+  "optionsUrlInvalid": {
+    "message": "URLの書式が間違っています"
+  },
+  "optionsUrlMax": {
+    "message": "URLは$1文字以下にしてください",
+    "placeholders": {
+      "target": { "content": "$1" }
+    }
+  },
+  "optionsInputElementMax": {
+    "message": "Input要素は$1文字以下にしてください",
+    "placeholders": {
+      "target": { "content": "$1" }
+    }
+  },
+  "optionsInputElementInvalid": {
+    "message": "Input要素の書式が間違っています"
+  },
+  "optionsPageRequire": {
+    "message": "URLは少なくとも一つ必要です"
+  },
+  "optionsPageMax": {
+    "message": "URLの数は$1以下にしてください",
+    "placeholders": {
+      "target": { "content": "$1" }
+    }
+  }
+}

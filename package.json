@@ -10,7 +10,7 @@
     "lint:js": "eslint src --ext .js,.jsx,.ts,.tsx",
     "lint:css": "stylelint src/**/*.{css,scss,sass}",
     "type-check": "tsc",
-    "watch:build": "watch \"yarn build\" src"
+    "watch:build": "watch \"yarn build\" src public"
   },
   "browserslist": {
     "production": [
