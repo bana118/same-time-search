@@ -1,0 +1,68 @@
+{
+  "popupSearchPlaceHolder": {
+    "message": "Search..."
+  },
+  "popupSearchGroupLabel": {
+    "message": "On"
+  },
+  "popupSearchButtonLabel": {
+    "message": "Search"
+  },
+  "optionsTitle": {
+    "message": "Same Time Search Options"
+  },
+  "optionsCaution": {
+    "message": "Caution: The data being edited will be deleted when you switch the tab"
+  },
+  "optionsSaveButtonLabel": {
+    "message": "Save"
+  },
+  "optionsGroupNameLabel": {
+    "message": "Group Name"
+  },
+  "optionsUrlLabel": {
+    "message": "URL (Required)"
+  },
+  "optionsInputElementLabel": {
+    "message": "Input Element (Optional)"
+  },
+  "optionsGroupNameRequire": {
+    "message": "Name is Required"
+  },
+  "optionsGroupNameMax": {
+    "message": "Maximum URL length is $1",
+    "placeholders": {
+      "target": { "content": "$1" }
+    }
+  },
+  "optionsUrlRequire": {
+    "message": "URL is Required"
+  },
+  "optionsUrlErrorMessage": {
+    "message": "Not URL"
+  },
+  "optionsUrlMax": {
+    "message": "Maximum URL length is $1",
+    "placeholders": {
+      "target": { "content": "$1" }
+    }
+  },
+  "optionsInputElementMax": {
+    "message": "Maximum Input Element length is $1",
+    "placeholders": {
+      "target": { "content": "$1" }
+    }
+  },
+  "optionsInputElementError": {
+    "message": "Not Input Element"
+  },
+  "optionsPageRequire": {
+    "message": "At least one URL is required"
+  },
+  "optionsPageMax": {
+    "message": "Maximum number of URLs is $1",
+    "placeholders": {
+      "target": { "content": "$1" }
+    }
+  }
+}
