@@ -1,47 +1,57 @@
 import { z } from "zod";
 import { isInputElement, stringToElement } from "./element";
 
-export const GroupNameLabel = "Tab Name";
+export const GroupNameLabel = chrome.i18n.getMessage("optionsGroupNameLabel");
 export const defaultUrl = "https://google.com";
 export const defaultStringInputElement = "";
-export const defaultGroupName = "Search Group";
+export const defaultGroupName = chrome.i18n.getMessage(
+  "optionsDefaultGroupName"
+);
 export const maxUrls = 20;
 export const minUrls = 1;
 const maxUrlLength = 1000;
 const maxInputElementLength = 1000;
-const maxNameLength = 100;
+const maxGroupNameLength = 100;
 export const maxGroups = 10;
 export const minGroups = 1;
 
 export const groupSchema = z.object({
   name: z
     .string()
-    .min(1, "Name is Required")
-    .max(maxNameLength, `Maximum URL length is ${maxNameLength}`),
+    .min(1, chrome.i18n.getMessage("optionsGroupNameRequire"))
+    .max(
+      maxGroupNameLength,
+      chrome.i18n.getMessage("optionsGroupNameMax", [maxGroupNameLength])
+    ),
   pages: z
     .array(
       z.object({
         url: z
           .string()
-          .min(1, "URL is Required")
-          .url("Not URL")
-          .max(maxUrlLength, `Maximum URL length is ${maxUrlLength}`),
+          .min(1, chrome.i18n.getMessage("optionsUrlRequire"))
+          .url(chrome.i18n.getMessage("optionsUrlInvalid"))
+          .max(
+            maxUrlLength,
+            chrome.i18n.getMessage("optionsUrlMax", [maxUrlLength])
+          ),
         stringInputElement: z
           .string()
           .max(
             maxInputElementLength,
-            `Maximum Input Element length is ${maxInputElementLength}`
+            chrome.i18n.getMessage("optionsInputElementMax", [
+              maxInputElementLength,
+            ])
           )
           .refine((value) => {
             if (value === "") return true;
             const element = stringToElement(value);
             if (element == null) return false;
             return isInputElement(element);
-          }, "Not Input Element"),
+          }, chrome.i18n.getMessage("optionsInputElementInvalid")),
       })
     )
-    .min(1, "At least one URL is required")
-    .max(maxUrls, `Maximum number of URLs is ${maxUrls}`),
+    .min(1, chrome.i18n.getMessage("optionsPageRequire"))
+    .max(maxUrls, chrome.i18n.getMessage("optionsPageMax", [maxUrls])),
 });
 
 export type Group = z.infer<typeof groupSchema>;
@@ -51,8 +61,8 @@ export type Options = { groups: Group[] };
 export const pagesLabel: {
   [P in keyof Group["pages"][0]]-?: string;
 } = {
-  url: "URL(Required)",
-  stringInputElement: "Input Element (Optional)",
+  url: chrome.i18n.getMessage("optionsUrlLabel"),
+  stringInputElement: chrome.i18n.getMessage("optionsInputElementLabel"),
 };
 
 export const saveOptions = (options: Options, onSave?: () => void): void => {

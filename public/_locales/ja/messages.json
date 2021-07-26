@@ -12,13 +12,19 @@
     "message": "Same Time Search 設定"
   },
   "optionsCaution": {
-    "message": "注意: タブを切り替えると編集中のデータは消去されます"
+    "message": "注意: タブを切り替えると保存していないデータは消去されます"
   },
   "optionsSaveButtonLabel": {
     "message": "保存"
   },
+  "optionsSavedTooltip": {
+    "message": "保存しました！"
+  },
   "optionsGroupNameLabel": {
     "message": "グループ名"
+  },
+  "optionsDefaultGroupName": {
+    "message": "検索グループ"
   },
   "optionsUrlLabel": {
     "message": "URL (必須)"
@@ -38,7 +44,7 @@
   "optionsUrlRequire": {
     "message": "URLは必須です"
   },
-  "optionsUrlErrorMessage": {
+  "optionsUrlInvalid": {
     "message": "URLの書式が間違っています"
   },
   "optionsUrlMax": {
@@ -53,7 +59,7 @@
       "target": { "content": "$1" }
     }
   },
-  "optionsInputElementError": {
+  "optionsInputElementInvalid": {
     "message": "Input要素の書式が間違っています"
   },
   "optionsPageRequire": {

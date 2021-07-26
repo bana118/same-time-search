@@ -62,7 +62,7 @@ export const Search = (): JSX.Element => {
   return (
     <form onSubmit={search}>
       <input
-        placeholder="Search..."
+        placeholder={chrome.i18n.getMessage("popupSearchPlaceholder")}
         className="flex-1 w-full px-4 py-2 my-2 text-base text-gray-700 placeholder-gray-400 bg-white border border-transparent rounded-lg shadow-md appearance-none focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
         value={searchText}
         onChange={(e) => setSearchText(e.target.value)}
@@ -72,7 +72,7 @@ export const Search = (): JSX.Element => {
           className="block mb-2 text-xs font-bold tracking-wide text-gray-700"
           htmlFor="group"
         >
-          On
+          {chrome.i18n.getMessage("popupSearchGroupLabel")}
         </label>
         <div className="relative">
           <select
@@ -106,7 +106,7 @@ export const Search = (): JSX.Element => {
         type="submit"
         className="flex-shrink-0 px-4 py-2 mt-2 text-base font-semibold text-white bg-blue-600 rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-blue-200"
       >
-        Search
+        {chrome.i18n.getMessage("popupSearchButtonLabel")}
       </button>
     </form>
   );

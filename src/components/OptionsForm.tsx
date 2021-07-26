@@ -75,11 +75,11 @@ export const GroupForm = ({
             type="submit"
             onBlur={() => setShowTooltip(false)}
           >
-            Save
+            {chrome.i18n.getMessage("optionsSaveButtonLabel")}
           </button>
           <div className={showTooltip ? "" : "invisible"}>
             <span className="text-sm text-green-500 rounded shadow-lg tooltip">
-              Saved!
+              {chrome.i18n.getMessage("optionsSavedTooltip")}
             </span>
           </div>
         </div>
@@ -99,7 +99,7 @@ export const GroupForm = ({
             <p className="text-xs italic text-red-500">{errors.name.message}</p>
           )}
         </div>
-        {fields.map((option, index) => {
+        {fields.map((_option, index) => {
           return (
             <div
               key={index}

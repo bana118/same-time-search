@@ -12,13 +12,19 @@
     "message": "Same Time Search Options"
   },
   "optionsCaution": {
-    "message": "Caution: The data being edited will be deleted when you switch the tab"
+    "message": "Caution: Unsaved data will be lost when switching tabs"
   },
   "optionsSaveButtonLabel": {
     "message": "Save"
   },
+  "optionsSavedTooltip": {
+    "message": "Saved!"
+  },
   "optionsGroupNameLabel": {
     "message": "Group Name"
+  },
+  "optionsDefaultGroupName": {
+    "message": "Search Group"
   },
   "optionsUrlLabel": {
     "message": "URL (Required)"
@@ -38,7 +44,7 @@
   "optionsUrlRequire": {
     "message": "URL is Required"
   },
-  "optionsUrlErrorMessage": {
+  "optionsUrlInvalid": {
     "message": "Not URL"
   },
   "optionsUrlMax": {
@@ -53,7 +59,7 @@
       "target": { "content": "$1" }
     }
   },
-  "optionsInputElementError": {
+  "optionsInputElementInvalid": {
     "message": "Not Input Element"
   },
   "optionsPageRequire": {
