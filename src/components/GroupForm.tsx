@@ -13,6 +13,7 @@ import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { IoAdd, IoClose } from "react-icons/io5";
 import { useEffect } from "react";
+import { InputModal } from "./InputModal";
 
 type GroupFormProps = {
   className?: string;
@@ -32,6 +33,7 @@ export const GroupForm = ({
   setGroup,
 }: GroupFormProps): JSX.Element => {
   const [showTooltip, setShowTooltip] = useState(false);
+  const [importModalOpen, setImportModalOpen] = useState(false);
 
   const {
     register,
@@ -68,6 +70,17 @@ export const GroupForm = ({
 
   return (
     <div className={className} onSubmit={handleSubmit(save)}>
+      <InputModal
+        open={importModalOpen}
+        onClose={() => setImportModalOpen(false)}
+      />
+      <button
+        onClick={() => {
+          setImportModalOpen(true);
+        }}
+      >
+        Import
+      </button>
       <form>
         <div className="flex flex-col items-center mb-4">
           <button
