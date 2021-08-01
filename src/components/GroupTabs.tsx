@@ -46,10 +46,10 @@ export const GroupTabs = ({ className }: GroupTabsProps): JSX.Element => {
   const removeTab = (index: number) => {
     if (options == null) return;
     removeGroup(index, (newGroups) => {
-      if (index === 0) {
-        setSelected(0);
-      } else {
-        setSelected(index - 1);
+      if (index <= selected) {
+        if (selected !== 0) {
+          setSelected(selected - 1);
+        }
       }
       setOptions({ groups: newGroups });
     });
