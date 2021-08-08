@@ -34,6 +34,7 @@ export const GroupForm = ({
 }: GroupFormProps): JSX.Element => {
   const [showTooltip, setShowTooltip] = useState(false);
   const [importModalOpen, setImportModalOpen] = useState(false);
+  const [exportModalOpen, setExportModalOpen] = useState(false);
 
   const {
     register,
@@ -70,17 +71,32 @@ export const GroupForm = ({
 
   return (
     <div className={className} onSubmit={handleSubmit(save)}>
-      <InputModal
-        open={importModalOpen}
-        onClose={() => setImportModalOpen(false)}
-      />
-      <button
-        onClick={() => {
-          setImportModalOpen(true);
-        }}
-      >
-        Import
-      </button>
+      <div className="flex justify-center mb-4">
+        <InputModal
+          open={importModalOpen}
+          onClose={() => setImportModalOpen(false)}
+        />
+        <InputModal
+          open={exportModalOpen}
+          onClose={() => setExportModalOpen(false)}
+        />
+        <button
+          className="px-4 py-2 mr-2 font-bold text-white bg-green-500 rounded hover:bg-green-700 focus:outline-none focus:shadow-outline"
+          onClick={() => {
+            setImportModalOpen(true);
+          }}
+        >
+          Import
+        </button>
+        <button
+          className="px-4 py-2 font-bold text-white bg-pink-500 rounded hover:bg-pink-700 focus:outline-none focus:shadow-outline"
+          onClick={() => {
+            setExportModalOpen(true);
+          }}
+        >
+          Export
+        </button>
+      </div>
       <form>
         <div className="flex flex-col items-center mb-4">
           <button
