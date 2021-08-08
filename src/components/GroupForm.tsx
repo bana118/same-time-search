@@ -76,10 +76,6 @@ export const GroupForm = ({
           open={importModalOpen}
           onClose={() => setImportModalOpen(false)}
         />
-        <InputModal
-          open={exportModalOpen}
-          onClose={() => setExportModalOpen(false)}
-        />
         <button
           className="px-4 py-2 mr-2 font-bold text-white bg-green-500 rounded hover:bg-green-700 focus:outline-none focus:shadow-outline"
           onClick={() => {
@@ -88,6 +84,11 @@ export const GroupForm = ({
         >
           Import
         </button>
+        <InputModal
+          open={exportModalOpen}
+          onClose={() => setExportModalOpen(false)}
+          defaultValue={JSON.stringify(group)}
+        />
         <button
           className="px-4 py-2 font-bold text-white bg-pink-500 rounded hover:bg-pink-700 focus:outline-none focus:shadow-outline"
           onClick={() => {
