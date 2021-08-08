@@ -41,6 +41,7 @@ export const GroupForm = ({
     control,
     handleSubmit,
     setValue,
+    setError,
     formState: { errors },
   } = useForm<Group>({
     resolver: zodResolver(groupSchema),
@@ -70,13 +71,28 @@ export const GroupForm = ({
   };
 
   return (
-    <div className={className} onSubmit={handleSubmit(save)}>
+    <div className={className}>
       <div className="flex justify-center mb-4">
         <InputModal
           open={importModalOpen}
           onClose={() => setImportModalOpen(false)}
+          defaultValue=""
           helpText="Paste the exported values"
           submitButtonText="Save"
+          onSubmit={(value) => {
+            setImportModalOpen(false);
+            try {
+              const group: Group = JSON.parse(value);
+              setValue("pages", group.pages, { shouldValidate: true });
+              setValue("name", group.name, { shouldValidate: true });
+              handleSubmit(save)();
+            } catch {
+              setError("name", {
+                type: "manual",
+                message: "Import Failed. Please enter the correct value.",
+              });
+            }
+          }}
         />
         <button
           className="px-4 py-2 mr-2 font-bold text-white bg-green-500 rounded hover:bg-green-700 focus:outline-none focus:shadow-outline"
@@ -101,7 +117,7 @@ export const GroupForm = ({
           Export
         </button>
       </div>
-      <form>
+      <form onSubmit={handleSubmit(save)}>
         <div className="flex flex-col items-center mb-4">
           <button
             className="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline"
