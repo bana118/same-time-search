@@ -77,8 +77,8 @@ export const GroupForm = ({
           open={importModalOpen}
           onClose={() => setImportModalOpen(false)}
           defaultValue=""
-          helpText="Paste the exported values"
-          submitButtonText="Save"
+          helpText={chrome.i18n.getMessage("importHelpText")}
+          submitButtonText={chrome.i18n.getMessage("importSaveButtonLabel")}
           onSubmit={(value) => {
             setImportModalOpen(false);
             try {
@@ -89,7 +89,7 @@ export const GroupForm = ({
             } catch {
               setError("name", {
                 type: "manual",
-                message: "Import Failed. Please enter the correct value.",
+                message: chrome.i18n.getMessage("importErrorMessage"),
               });
             }
           }}
@@ -100,13 +100,13 @@ export const GroupForm = ({
             setImportModalOpen(true);
           }}
         >
-          Import
+          {chrome.i18n.getMessage("importButtonLabel")}
         </button>
         <InputModal
           open={exportModalOpen}
           onClose={() => setExportModalOpen(false)}
           defaultValue={JSON.stringify(group)}
-          helpText="Paste this value into the import screen"
+          helpText={chrome.i18n.getMessage("exportHelpText")}
         />
         <button
           className="px-4 py-2 font-bold text-white bg-pink-500 rounded hover:bg-pink-700 focus:outline-none focus:shadow-outline"
@@ -114,7 +114,7 @@ export const GroupForm = ({
             setExportModalOpen(true);
           }}
         >
-          Export
+          {chrome.i18n.getMessage("exportButtonLabel")}
         </button>
       </div>
       <form onSubmit={handleSubmit(save)}>

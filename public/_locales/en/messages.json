@@ -70,5 +70,23 @@
     "placeholders": {
       "target": { "content": "$1" }
     }
+  },
+  "importButtonLabel": {
+    "message": "Import"
+  },
+  "importHelpText": {
+    "message": "Paste the exported values"
+  },
+  "importErrorMessage": {
+    "message": "Import Failed. Please enter the correct value."
+  },
+  "importSaveButtonLabel": {
+    "message": "Save"
+  },
+  "exportButtonLabel": {
+    "message": "Export"
+  },
+  "exportHelpText": {
+    "message": "Paste this value in the import screen"
   }
 }

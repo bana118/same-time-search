@@ -70,5 +70,23 @@
     "placeholders": {
       "target": { "content": "$1" }
     }
+  },
+  "importButtonLabel": {
+    "message": "インポート"
+  },
+  "importHelpText": {
+    "message": "エクスポートした値を張り付けてください"
+  },
+  "importErrorMessage": {
+    "message": "インポートに失敗しました。正しい値を入力してください。"
+  },
+  "importSaveButtonLabel": {
+    "message": "保存"
+  },
+  "exportButtonLabel": {
+    "message": "エクスポート"
+  },
+  "exportHelpText": {
+    "message": "この値をインポート画面で張り付けてください"
   }
 }
