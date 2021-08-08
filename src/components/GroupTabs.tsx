@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { GroupForm } from "./OptionsForm";
+import { GroupForm } from "./GroupForm";
 import { IoAdd, IoClose } from "react-icons/io5";
 import {
   defaultGroupName,

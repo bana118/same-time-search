@@ -13,6 +13,7 @@ import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { IoAdd, IoClose } from "react-icons/io5";
 import { useEffect } from "react";
+import { InputModal } from "./InputModal";
 
 type GroupFormProps = {
   className?: string;
@@ -32,12 +33,15 @@ export const GroupForm = ({
   setGroup,
 }: GroupFormProps): JSX.Element => {
   const [showTooltip, setShowTooltip] = useState(false);
+  const [importModalOpen, setImportModalOpen] = useState(false);
+  const [exportModalOpen, setExportModalOpen] = useState(false);
 
   const {
     register,
     control,
     handleSubmit,
     setValue,
+    setError,
     formState: { errors },
   } = useForm<Group>({
     resolver: zodResolver(groupSchema),
@@ -67,8 +71,55 @@ export const GroupForm = ({
   };
 
   return (
-    <div className={className} onSubmit={handleSubmit(save)}>
-      <form>
+    <div className={className}>
+      <div className="flex justify-center mb-4">
+        <InputModal
+          open={importModalOpen}
+          onClose={() => setImportModalOpen(false)}
+          onBackgroundClick={() => setImportModalOpen(false)}
+          defaultValue=""
+          helpText={chrome.i18n.getMessage("importHelpText")}
+          submitButtonText={chrome.i18n.getMessage("importSaveButtonLabel")}
+          onSubmit={(value) => {
+            setImportModalOpen(false);
+            try {
+              const group: Group = JSON.parse(value);
+              setValue("pages", group.pages, { shouldValidate: true });
+              setValue("name", group.name, { shouldValidate: true });
+              handleSubmit(save)();
+            } catch {
+              setError("name", {
+                type: "manual",
+                message: chrome.i18n.getMessage("importErrorMessage"),
+              });
+            }
+          }}
+        />
+        <button
+          className="px-4 py-2 mr-2 font-bold text-white bg-green-500 rounded hover:bg-green-700 focus:outline-none focus:shadow-outline"
+          onClick={() => {
+            setImportModalOpen(true);
+          }}
+        >
+          {chrome.i18n.getMessage("importButtonLabel")}
+        </button>
+        <InputModal
+          open={exportModalOpen}
+          onClose={() => setExportModalOpen(false)}
+          onBackgroundClick={() => setExportModalOpen(false)}
+          defaultValue={JSON.stringify(group)}
+          helpText={chrome.i18n.getMessage("exportHelpText")}
+        />
+        <button
+          className="px-4 py-2 font-bold text-white bg-pink-500 rounded hover:bg-pink-700 focus:outline-none focus:shadow-outline"
+          onClick={() => {
+            setExportModalOpen(true);
+          }}
+        >
+          {chrome.i18n.getMessage("exportButtonLabel")}
+        </button>
+      </div>
+      <form onSubmit={handleSubmit(save)}>
         <div className="flex flex-col items-center mb-4">
           <button
             className="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline"
