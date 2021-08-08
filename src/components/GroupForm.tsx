@@ -76,6 +76,7 @@ export const GroupForm = ({
         <InputModal
           open={importModalOpen}
           onClose={() => setImportModalOpen(false)}
+          onBackgroundClick={() => setImportModalOpen(false)}
           defaultValue=""
           helpText={chrome.i18n.getMessage("importHelpText")}
           submitButtonText={chrome.i18n.getMessage("importSaveButtonLabel")}
@@ -105,6 +106,7 @@ export const GroupForm = ({
         <InputModal
           open={exportModalOpen}
           onClose={() => setExportModalOpen(false)}
+          onBackgroundClick={() => setExportModalOpen(false)}
           defaultValue={JSON.stringify(group)}
           helpText={chrome.i18n.getMessage("exportHelpText")}
         />
