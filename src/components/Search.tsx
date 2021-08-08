@@ -21,7 +21,7 @@ const createChromeTab = async (
           ) => {
             if (tabId === tab.id && changeInfo.status == "complete") {
               const stringInputElement = page.stringInputElement;
-              const msg: Message = { searchText, stringInputElement };
+              const msg: Message = { searchText, stringInputElement, tabId };
               chrome.tabs.sendMessage(tabId, msg);
               chrome.tabs.onUpdated.removeListener(sendMessageToContentScript);
             }
