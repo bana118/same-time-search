@@ -75,6 +75,8 @@ export const GroupForm = ({
         <InputModal
           open={importModalOpen}
           onClose={() => setImportModalOpen(false)}
+          helpText="Paste the exported values"
+          submitButtonText="Save"
         />
         <button
           className="px-4 py-2 mr-2 font-bold text-white bg-green-500 rounded hover:bg-green-700 focus:outline-none focus:shadow-outline"
@@ -88,6 +90,7 @@ export const GroupForm = ({
           open={exportModalOpen}
           onClose={() => setExportModalOpen(false)}
           defaultValue={JSON.stringify(group)}
+          helpText="Paste this value into the import screen"
         />
         <button
           className="px-4 py-2 font-bold text-white bg-pink-500 rounded hover:bg-pink-700 focus:outline-none focus:shadow-outline"
