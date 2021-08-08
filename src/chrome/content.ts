@@ -1,7 +1,10 @@
 import { searchInputAndForm, searchSubmitButton } from "../utils/element";
-import { Message } from "../utils/message";
+import {
+  ContentToBackgroundMessage,
+  PopupToContentMessage,
+} from "../utils/message";
 
-chrome.runtime.onMessage.addListener((message: Message) => {
+chrome.runtime.onMessage.addListener((message: PopupToContentMessage) => {
   const inputAndForm = searchInputAndForm(message.stringInputElement);
   // TODO エラーを表示する
   if (inputAndForm == null) return;
@@ -16,35 +19,11 @@ chrome.runtime.onMessage.addListener((message: Message) => {
     new Event("input", { bubbles: true })
   );
   // TODO バックグランドで行う
-  chrome.debugger.attach({ tabId: message.tabId }, "1.3", () => {
-    inputAndForm.inputElement.focus();
-    chrome.debugger.sendCommand(
-      { tabId: message.tabId },
-      "Input.dispatchKeyEvent",
-      {
-        type: "keyDown",
-        windowsVirtualKeyCode: 13,
-        nativeVirtualKeyCode: 13,
-        macCharCode: 13,
-      },
-      () => {
-        chrome.debugger.sendCommand(
-          { tabId: message.tabId },
-          "Input.dispatchKeyEvent",
-          {
-            type: "keyUp",
-            windowsVirtualKeyCode: 13,
-            nativeVirtualKeyCode: 13,
-            macCharCode: 13,
-          },
-          () => {
-            chrome.debugger.detach({ tabId: message.tabId });
-          }
-        );
-      }
-    );
-  });
-
+  inputAndForm.inputElement.focus();
+  const toBackgroundMessage: ContentToBackgroundMessage = {
+    tabId: message.tabId,
+  };
+  chrome.runtime.sendMessage(toBackgroundMessage);
   // const submitButton = searchSubmitButton(inputAndForm.formElement);
   // if (submitButton == null) {
   //   const enterKeyDownEvent = new KeyboardEvent("keydown", {
@@ -58,5 +37,3 @@ chrome.runtime.onMessage.addListener((message: Message) => {
   //   submitButton.click();
   // }
 });
-
-export {};

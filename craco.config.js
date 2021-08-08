@@ -18,6 +18,7 @@ module.exports = {
           ].filter(Boolean),
           content: "./src/chrome/content.ts",
           options: "./src/options/index.tsx",
+          background: "./src/chrome/background.ts",
         },
         output: {
           ...webpackConfig.output,
