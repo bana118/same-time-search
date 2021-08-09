@@ -11,6 +11,10 @@ chrome.runtime.onMessage.addListener((message: Message) => {
   inputAndForm.inputElement.dispatchEvent(
     new Event("change", { bubbles: true })
   );
+  // loosedrawing.comなどではinputイベントを発火させる必要がある
+  inputAndForm.inputElement.dispatchEvent(
+    new Event("input", { bubbles: true })
+  );
 
   if (inputAndForm.formElement != null) {
     const submitButton = searchSubmitButton(inputAndForm.formElement);
