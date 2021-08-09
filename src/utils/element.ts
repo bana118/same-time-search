@@ -6,12 +6,10 @@ export const isInputElement = (
 
 type InputAndForm = {
   inputElement: HTMLInputElement;
-  formElement: HTMLFormElement;
+  formElement: HTMLFormElement | null;
 };
 
-const searchFormByInput = (
-  inputElement: HTMLInputElement
-): InputAndForm | null => {
+const searchFormByInput = (inputElement: HTMLInputElement): InputAndForm => {
   let formElement: HTMLFormElement | null = null;
   let element: HTMLElement = inputElement;
   while (element.parentElement != null) {
@@ -21,7 +19,6 @@ const searchFormByInput = (
     }
     element = element.parentElement;
   }
-  if (formElement == null) return null;
   return { inputElement, formElement };
 };
 
@@ -41,7 +38,7 @@ export const searchInputAndForm = (
     const elementById = document.getElementById(id);
     if (elementById != null && isInputElement(elementById)) {
       const formAndInput = searchFormByInput(elementById);
-      if (formAndInput != null) return formAndInput;
+      return formAndInput;
     }
 
     // classNameから検索
@@ -54,7 +51,7 @@ export const searchInputAndForm = (
     );
     for (const inputElementByClassName of inputElementsByClassName) {
       const formAndInput = searchFormByInput(inputElementByClassName);
-      if (formAndInput != null) return formAndInput;
+      return formAndInput;
     }
   }
 
@@ -62,7 +59,7 @@ export const searchInputAndForm = (
   const inputElements = Array.from(document.getElementsByTagName("input"));
   for (const inputElement of inputElements) {
     const formAndInput = searchFormByInput(inputElement);
-    if (formAndInput != null) return formAndInput;
+    return formAndInput;
   }
 
   return null;

@@ -12,12 +12,14 @@ chrome.runtime.onMessage.addListener((message: Message) => {
     new Event("change", { bubbles: true })
   );
 
-  const submitButton = searchSubmitButton(inputAndForm.formElement);
-  if (submitButton == null) {
-    inputAndForm.formElement.submit();
-  } else {
-    // submit buttonがあればsubmitイベントが発火するのでsubmit buttonを使う
-    submitButton.click();
+  if (inputAndForm.formElement != null) {
+    const submitButton = searchSubmitButton(inputAndForm.formElement);
+    if (submitButton == null) {
+      inputAndForm.formElement.submit();
+    } else {
+      // submit buttonがあればsubmitイベントが発火するのでsubmit buttonを使う
+      submitButton.click();
+    }
   }
 });
 
