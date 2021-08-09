@@ -32,7 +32,7 @@ export const searchInputAndForm = (
   stringInputElement: string
 ): InputAndForm | null => {
   const htmlInputElement = stringToElement(stringInputElement);
-  if (htmlInputElement != null && !isInputElement(htmlInputElement)) {
+  if (htmlInputElement != null && isInputElement(htmlInputElement)) {
     // idから検索
     const id = htmlInputElement.id;
     const elementById = document.getElementById(id);
