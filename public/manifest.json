@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Same Time Search",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "default_locale": "en",
   "action": {
     "default_icon": {

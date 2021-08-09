@@ -11,13 +11,19 @@ chrome.runtime.onMessage.addListener((message: Message) => {
   inputAndForm.inputElement.dispatchEvent(
     new Event("change", { bubbles: true })
   );
+  // loosedrawing.comなどではinputイベントを発火させる必要がある
+  inputAndForm.inputElement.dispatchEvent(
+    new Event("input", { bubbles: true })
+  );
 
-  const submitButton = searchSubmitButton(inputAndForm.formElement);
-  if (submitButton == null) {
-    inputAndForm.formElement.submit();
-  } else {
-    // submit buttonがあればsubmitイベントが発火するのでsubmit buttonを使う
-    submitButton.click();
+  if (inputAndForm.formElement != null) {
+    const submitButton = searchSubmitButton(inputAndForm.formElement);
+    if (submitButton == null) {
+      inputAndForm.formElement.submit();
+    } else {
+      // submit buttonがあればsubmitイベントが発火するのでsubmit buttonを使う
+      submitButton.click();
+    }
   }
 });
 
