@@ -1,5 +1,6 @@
 import { searchInputAndForm, searchSubmitButton } from "../utils/element";
 import { Message } from "../utils/message";
+import { noSubmitDomains } from "../utils/no-submit-domain-list";
 
 chrome.runtime.onMessage.addListener((message: Message) => {
   const inputAndForm = searchInputAndForm(message.stringInputElement);
@@ -16,7 +17,9 @@ chrome.runtime.onMessage.addListener((message: Message) => {
     new Event("input", { bubbles: true })
   );
 
-  if (inputAndForm.formElement != null) {
+  const domain = document.domain;
+
+  if (inputAndForm.formElement != null && !noSubmitDomains.includes(domain)) {
     const submitButton = searchSubmitButton(inputAndForm.formElement);
     if (submitButton == null) {
       inputAndForm.formElement.submit();
